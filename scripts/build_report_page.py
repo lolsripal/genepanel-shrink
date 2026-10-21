@@ -50,5 +50,16 @@ data = {"curves": curves, "models": models, "selectors": selectors, "retention":
 
 tpl = Path("scripts/report_template.html").read_text()
 Path("docs").mkdir(exist_ok=True)
-Path("docs/report.html").write_text(tpl.replace("/*__DATA__*/null", json.dumps(data)))
-print("wrote docs/report.html")
+html = tpl.replace("/*__DATA__*/null", json.dumps(data))
+split = html.index('<div class="wrap">')
+head, body = html[:split], html[split:]
+# The template is a body fragment (the claude.ai artifact host wraps it); GitHub Pages
+# needs a full document, so index.html gets its own skeleton.
+page = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+        '<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n'
+        + head + '</head>\n<body>\n' + body + '\n</body>\n</html>\n')
+Path("docs/report.html").write_text(html)
+Path("docs/index.html").write_text(page)
+Path("docs/.nojekyll").touch()
+print("wrote docs/report.html, docs/index.html")

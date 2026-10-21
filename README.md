@@ -6,7 +6,9 @@ How much biological information can we remove before detection degrades?**
 TCGA RNA-seq for breast (BRCA) and lung adenocarcinoma (LUAD). We rank genes with six
 methods, cut the ranking into panels of 500 → 100 → 50 → 20 → 10 → 5 → 2 → 1 genes,
 train four classifiers on each, and compare them with the all-genes model and with
-random panels of the same size. Findings are in [REPORT.md](REPORT.md).
+random panels of the same size. Findings are in [REPORT.md](REPORT.md), and as an interactive
+page at **https://lolsripal.github.io/genepanel-shrink/** (built from `results/tables` by
+`scripts/build_report_page.py` into `docs/`).
 
 ## Design in brief
 | | |

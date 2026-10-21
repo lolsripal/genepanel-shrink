@@ -23,7 +23,7 @@ never influence which genes are chosen.
 | Known biological relevance? | Yes (literature, pathways, known stroma/tissue markers), but mostly lost normal-tissue genes and not cancer drivers | §5 |
 | How much information can be removed? | Over 99.99% of genes in this setting | §6 |
 
-Interactive version of this report: `docs/report.html` (built by `scripts/build_report_page.py`).
+Interactive version of this report: https://lolsripal.github.io/genepanel-shrink/ (built into `docs/` by `scripts/build_report_page.py`).
 
 ## Data
 | | samples | tumor | normal | patients | genes after filter |
