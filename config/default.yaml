@@ -1,0 +1,35 @@
+# Full experiment: 2 cancers x 2 tasks x 5x5 CV. ~15 min on 8 cores.
+seed: 42
+data_dir: data
+results_dir: results
+
+cancers: [BRCA, LUAD]
+tasks:
+  tumor_vs_normal: {}            # all primary tumors vs all solid-tissue normals
+  stage1_vs_normal: {stage: I}   # only Stage I tumors vs all normals
+
+preprocess:
+  min_expr: 1.0          # log2(RSEM+1) threshold for "expressed"
+  min_frac_expressed: 0.2
+  min_std: 0.1
+
+cv:
+  n_splits: 5
+  n_repeats: 5
+  n_jobs: 8              # parallel outer folds
+
+selection:
+  prefilter_k: 2000      # univariate (ANOVA F) prefilter inside each training fold
+  selectors: [univariate, variance, lasso, mutual_info, rfe, shap]
+  panel_sizes: [500, 100, 50, 20, 10, 5, 2, 1]
+  rfe_drop_frac: 0.1
+
+models: [logreg, rf, xgb, mlp]
+
+random_baseline:
+  n_draws: 20
+  models: [logreg]
+
+analysis:
+  delta_auc: 0.01        # "retains performance" = mean AUC within this of all-genes
+  consensus_freq: 0.8    # gene in >= 80% of fold panels

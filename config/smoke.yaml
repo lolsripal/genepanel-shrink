@@ -1,0 +1,19 @@
+# Quick end-to-end check (< 2 min).
+seed: 0
+data_dir: data
+results_dir: results/smoke
+
+cancers: [LUAD]
+tasks:
+  tumor_vs_normal: {}
+
+preprocess: {min_expr: 1.0, min_frac_expressed: 0.2, min_std: 0.1}
+cv: {n_splits: 2, n_repeats: 1, n_jobs: 2}
+selection:
+  prefilter_k: 300
+  selectors: [univariate, lasso, mutual_info, rfe, shap, variance]
+  panel_sizes: [50, 10]
+  rfe_drop_frac: 0.2
+models: [logreg]
+random_baseline: {n_draws: 3, models: [logreg]}
+analysis: {delta_auc: 0.01, consensus_freq: 0.8}
