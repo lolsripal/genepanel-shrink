@@ -5,7 +5,7 @@ __pycache__/
 data/raw/
 data/processed/
 results/cache/
-results/*.parquet
+results/smoke/*.parquet
 .DS_Store
 results/smoke/
 results/run.log
