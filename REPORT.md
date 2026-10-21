@@ -11,6 +11,20 @@ Every number below comes from `results/tables/`. The setup: 5×5 repeated, patie
 cross-validation, with gene selection repeated inside each training fold, so test samples
 never influence which genes are chosen.
 
+## The brief, point by point
+| Asked for | What was done | Result |
+|---|---|---|
+| 1–2 cancer types with public expression data | TCGA BRCA (1,211 samples) and LUAD (573) via UCSC Xena; tumor vs normal, plus Stage I tumors vs normal | §1 |
+| Start with hundreds/thousands of genes | 20,530 genes in source; 17,699–17,955 after a label-free filter | §1 |
+| LASSO, mutual information, RFE, SHAP | All four, plus univariate, top-variance and random baselines | §3 |
+| Panels of 500 → 100 → 50 → 20 → 10 | Done, extended to 5, 2, 1 | §2 |
+| Logistic regression, RF, XGBoost, simple neural net | All four; within 0.008 AUC at 10 genes | §2 |
+| Does the smallest panel retain performance? | Yes: 1–2 genes non-inferior to all genes for every model and task | §2 |
+| Known biological relevance? | Yes (literature, pathways, known stroma/tissue markers), but mostly lost normal-tissue genes and not cancer drivers | §5 |
+| How much information can be removed? | Over 99.99% of genes in this setting | §6 |
+
+Interactive version of this report: `docs/report.html` (built by `scripts/build_report_page.py`).
+
 ## Data
 | | samples | tumor | normal | patients | genes after filter |
 |---|---|---|---|---|---|
@@ -80,10 +94,11 @@ see `summary.csv`.)
 ![error vs k](results/figures/error_vs_k_logreg.png)
 
 ## 3. Which method picks the best genes?
-At k = 1–2, the methods that model genes **jointly or non-linearly** (RFE, mutual
-information, SHAP) beat univariate ranking and LASSO. In LUAD at k = 1, MI reaches
-0.999 AUC vs 0.979 for univariate. LASSO's first gene to enter is not always the best
-standalone gene. Above k = 5, the selectors are indistinguishable.
+No method wins everywhere. In LUAD at k = 1, mutual information, RFE and SHAP find
+clearly better single genes than univariate ranking or LASSO (AUC 0.989–0.999 vs
+0.974–0.984). In BRCA, all methods fall within 0.011 of each other, and for Stage I the
+univariate test and LASSO come out slightly ahead. Above k = 5, the selectors are
+indistinguishable.
 
 **Stability** (mean pairwise Jaccard of fold panels, `stability.csv`) is moderate. At
 k = 10, the overlap between any two folds' panels ranges from 35% to 80% depending on
