@@ -59,16 +59,20 @@ results = nb([
     "summary = pd.read_csv(f'{TAB}/summary.csv')\nret = pd.read_csv(f'{TAB}/retention.csv')\nvsr = pd.read_csv(f'{TAB}/vs_random.csv')",
     "md:## AUC vs panel size\nDashed line: all genes. Gray band: 5–95% range of random gene panels of the same size (logistic regression).",
     "import glob\nfor f in sorted(glob.glob(f'{FIG}/auc_vs_k_*.png')):\n    display(Image(f))",
+    "md:## The same curves as error (1 − AUC, log scale)\nNear the ceiling, AUC plots hide the differences; this view shows them.",
+    "display(Image(f'{FIG}/error_vs_k_logreg.png'))",
     "md:## Smallest panel that retains performance\nNon-inferiority: the lower 95% bound of the paired fold-wise AUC difference (panel − all genes) must stay above −0.01.",
     "ret.pivot_table(index=['cancer', 'task', 'selector'], columns='model', values='smallest_retained_k')",
     "md:## Do selected panels beat random genes?",
-    "vsr[vsr.k.isin([1, 2, 5, 10])].pivot_table(index=['cancer', 'task', 'k'], columns='selector', values='auc')\n"
-    "  .join(vsr.groupby(['cancer', 'task', 'k']).random_auc_mean.first().rename('RANDOM'))",
+    "(vsr[vsr.k.isin([1, 2, 5, 10])].pivot_table(index=['cancer', 'task', 'k'], columns='selector', values='auc')\n"
+    "   .join(vsr.groupby(['cancer', 'task', 'k']).random_auc_mean.first().rename('RANDOM')))",
     "md:## Beyond AUC: sensitivity at 95% specificity\nThe clinically relevant operating point for screening.",
     "summary[summary.k.isin([1, 5, 10, 50]) & (summary.model == 'logreg') & (summary.selector != 'random')]\\\n"
     "  .pivot_table(index=['cancer', 'task', 'k'], columns='selector', values='sens_at_95spec_mean')",
     "md:## Selector × model at k = 10",
     "display(Image(f'{FIG}/heatmap_k10.png'))",
+    "md:## …and at k = 1",
+    "display(Image(f'{FIG}/heatmap_k1.png'))",
     "md:## Stability",
     "display(Image(f'{FIG}/stability.png'))",
     "md:## Cross-cancer transfer of the consensus 10-gene panel",

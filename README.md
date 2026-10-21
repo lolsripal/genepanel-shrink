@@ -27,7 +27,7 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 ./scripts/fix_xgboost_macos.sh      # macOS without Homebrew libomp only
 .venv/bin/pytest                    # synthetic-data tests, incl. a leakage check
 .venv/bin/genepanel all --config config/smoke.yaml   # ~1 min end-to-end check
-.venv/bin/genepanel all             # full run: download, CV (~25 min on 8 cores), analyze, biology, figures
+.venv/bin/genepanel all             # full run: download, CV (~20 min on 8 cores), analyze, biology, figures
 python scripts/make_notebooks.py && jupyter nbconvert --execute --inplace notebooks/*.ipynb
 ```
 Steps can be run separately: `download`, `run`, `analyze`, `biology` (`--no-pubmed` to skip

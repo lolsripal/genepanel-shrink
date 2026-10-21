@@ -1,4 +1,4 @@
-# Full experiment: 2 cancers x 2 tasks x 5x5 CV. ~15 min on 8 cores.
+# Full experiment: 2 cancers x 2 tasks x 5x5 CV. ~20 min on 8 cores.
 seed: 42
 data_dir: data
 results_dir: results

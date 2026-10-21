@@ -1,0 +1,5 @@
+cancer,task,median_selected,median_random,frac_selected_with_any,frac_random_with_any,mannwhitney_p
+BRCA,stage1_vs_normal,10.0,1.0,1.0,0.68,0.0011925282491049777
+BRCA,tumor_vs_normal,10.5,1.0,0.9,0.56,0.0036586395176130787
+LUAD,stage1_vs_normal,2.5,0.0,0.9,0.42,0.0008261038313602538
+LUAD,tumor_vs_normal,2.0,0.0,0.7,0.36,0.012699385742260805
