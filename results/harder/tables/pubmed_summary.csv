@@ -1,0 +1,4 @@
+cancer,task,median_selected,median_random,frac_selected_with_any,frac_random_with_any,mannwhitney_p
+BRCA,pam50_subtype,24.0,1.0,1.0,0.7,2.811005772101827e-06
+LUAD_LUSC,adeno_vs_squamous,3.5,0.0,0.7,0.48,0.03803187534448738
+TCGA12,tissue_of_origin,191.0,16.0,1.0,0.96,0.0034695639370636413

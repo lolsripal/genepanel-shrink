@@ -1,0 +1,37 @@
+# Chapter 3 (healthy controls + external validation): UCSC Toil, TCGA and GTEx through one pipeline.
+seed: 42
+data_dir: data
+results_dir: results/external
+pipeline: [download, run, analyze, external, report]
+
+datasets:
+  - {source: toil, kind: tumor_vs_gtex, tissue: breast, name: BRCA_GTEx, task: tumor_vs_healthy, pubmed_term: breast cancer}
+  - {source: toil, kind: tumor_vs_gtex, tissue: lung, name: LUAD_GTEx, task: tumor_vs_healthy, pubmed_term: lung adenocarcinoma}
+  # study-effect controls: adjacent normal (TCGA) vs healthy (GTEx); both are "normal"
+  - {source: toil, kind: normal_vs_gtex, tissue: breast, name: BRCA_GTEx, task: normal_vs_healthy}
+  - {source: toil, kind: normal_vs_gtex, tissue: lung, name: LUAD_GTEx, task: normal_vs_healthy}
+
+preprocess: {min_expr: 1.0, min_frac_expressed: 0.2, min_std: 0.1}
+cv: {n_splits: 5, n_repeats: 5, n_jobs: 8}
+
+selection:
+  prefilter_k: 2000
+  selectors: [univariate, variance, lasso, mutual_info, rfe, shap, stability]
+  stability_subsamples: 50
+  panel_sizes: [500, 100, 50, 20, 10, 5, 2, 1]
+  rfe_drop_frac: 0.1
+
+models: [logreg, rf, xgb, mlp]
+random_baseline: {n_draws: 20, models: [logreg]}
+prediction_models: [logreg]
+
+external:
+  # train on Xena (legacy RSEM) tumor vs adjacent normal from half the patients, test unchanged
+  # on Toil TCGA tumors from the other half vs GTEx healthy tissue
+  pairs: [{xena: BRCA, toil_tissue: breast}, {xena: LUAD, toil_tissue: lung}]
+  n_splits: 5
+  panel_sizes: [1, 2, 5, 10, 20, 50, 100, 500]
+  selectors: [univariate, lasso, rfe]
+  n_boot: 1000
+
+analysis: {delta_auc: 0.01, consensus_freq: 0.8, sens_target: 0.9}

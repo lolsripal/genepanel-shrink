@@ -52,10 +52,11 @@ def enrich(genes: list[str], background: list[str]) -> pd.DataFrame:
     return res.results
 
 
-def pubmed_count(gene: str, cancer: str, session: requests.Session, cache: dict) -> int:
-    key = f"{gene}|{cancer}"
+def pubmed_count(gene: str, disease: str, session: requests.Session, cache: dict) -> int:
+    """Number of PubMed abstracts mentioning `gene` and `disease` (e.g. "lung cancer")."""
+    key = f"{gene}|{disease}"
     if key not in cache:
-        term = f'"{gene}"[tiab] AND "{CANCER_TERMS[cancer]}"[tiab]'
+        term = f'"{gene}"[tiab] AND "{disease}"[tiab]'
         for attempt in range(5):
             r = session.get(EUTILS, params={"db": "pubmed", "term": term, "retmode": "json",
                                             "rettype": "count"}, timeout=30)
@@ -67,8 +68,14 @@ def pubmed_count(gene: str, cancer: str, session: requests.Session, cache: dict)
     return cache.get(key, -1)
 
 
-def literature(panels: pd.DataFrame, universe: dict, cache_path: Path, n_random=50, seed=0):
+def literature(panels: pd.DataFrame, universe: dict, cache_path: Path, terms: dict,
+               n_random=50, seed=0):
+    """`terms`: {(dataset, task): disease term}. Cache keys are gene|term (v1 caches keyed
+    gene|BRCA or gene|LUAD are translated on load)."""
     cache = pd.read_csv(cache_path).set_index("key")["count"].to_dict() if cache_path.exists() else {}
+    for old, new in CANCER_TERMS.items():
+        cache = {k.replace(f"|{old}", f"|{new}") if k.endswith(f"|{old}") else k: v
+                 for k, v in cache.items()}
     s = requests.Session()
     rng = np.random.default_rng(seed)
     rows = []
@@ -76,24 +83,28 @@ def literature(panels: pd.DataFrame, universe: dict, cache_path: Path, n_random=
         for (c, t), grp in panels.groupby(["cancer", "task"]):
             sel = grp.gene.unique()
             rnd = rng.choice(sorted(universe[(c, t)] - set(sel)), size=n_random, replace=False)
+            term = terms[(c, t)]
             for g in sel:
                 rows.append({"cancer": c, "task": t, "gene": g, "set": "selected",
-                             "pubmed": pubmed_count(g, c, s, cache)})
+                             "pubmed": pubmed_count(g, term, s, cache)})
             for g in rnd:
                 rows.append({"cancer": c, "task": t, "gene": g, "set": "random",
-                             "pubmed": pubmed_count(g, c, s, cache)})
+                             "pubmed": pubmed_count(g, term, s, cache)})
     finally:
         pd.DataFrame({"key": list(cache), "count": list(cache.values())}).to_csv(cache_path, index=False)
     return pd.DataFrame(rows)
 
 
 def run(cfg, pubmed: bool = True):
-    from .cli import load_datasets
+    from .cli import load_items
 
     res = Path(cfg["results_dir"])
     tab = res / "tables"
     cons = pd.read_csv(tab / "consensus.csv")
-    universe = {(d.cancer, d.task): set(d.genes) for d in load_datasets(cfg)}
+    items = load_items(cfg)
+    universe = {(d.cancer, d.task): set(d.genes) for d, _, _ in items}
+    terms = {(d.cancer, d.task): spec.get("pubmed_term") or CANCER_TERMS.get(d.cancer, "cancer")
+             for d, _, spec in items}
     onco = oncokb_genes(Path(cfg["data_dir"]) / "ref")
 
     # 1. OncoKB overlap for every consensus panel
@@ -101,7 +112,11 @@ def run(cfg, pubmed: bool = True):
     for (c, t, panel), grp in cons.groupby(["cancer", "task", "panel"]):
         ov.append({"cancer": c, "task": t, "panel": panel,
                    **overlap_test(set(grp.gene), onco, universe[(c, t)])})
-    pd.DataFrame(ov).to_csv(tab / "oncokb_overlap.csv", index=False)
+    ov = pd.DataFrame(ov)
+    # many panels are tested, so report BH false-discovery-rate q-values too
+    from .stats import bh_qvalues
+    ov["q_value"] = bh_qvalues(ov.p_value.to_numpy())
+    ov.to_csv(tab / "oncokb_overlap.csv", index=False)
 
     # 2. Enrichment of the larger panels (enrichment on <20 genes has little power)
     enr = []
@@ -122,7 +137,7 @@ def run(cfg, pubmed: bool = True):
     # 3. Literature support for the 10-gene consensus panels
     if pubmed:
         small = cons[cons.panel == "consensus10"]
-        lit = literature(small, universe, Path(cfg["data_dir"]) / "ref" / "pubmed_cache.csv",
+        lit = literature(small, universe, Path(cfg["data_dir"]) / "ref" / "pubmed_cache.csv", terms,
                          seed=cfg["seed"])
         lit.to_csv(tab / "pubmed_counts.csv", index=False)
         summ = []

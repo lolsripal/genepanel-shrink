@@ -95,6 +95,62 @@ bio = nb([
     "pc[pc.set == 'selected'].sort_values(['cancer', 'task', 'pubmed'], ascending=[True, True, False])",
 ])
 
-for name, n in [("01_eda", eda), ("02_results", results), ("03_biology", bio)]:
+CHAPTER = """\
+import os, glob
+os.chdir('..') if os.path.basename(os.getcwd()) == 'notebooks' else None
+import pandas as pd
+from IPython.display import Image, display
+pd.set_option('display.precision', 3); pd.set_option('display.max_rows', 80)
+R = '{d}'
+TAB, FIG = f'{{R}}/tables', f'{{R}}/figures'
+summary = pd.read_csv(f'{{TAB}}/summary.csv')
+best = lambda k: (summary[(summary.model == 'logreg') & (summary.k == k) & ~summary.selector.isin(['random', 'variance', 'all_genes'])]
+                  .groupby(['cancer', 'task']).auc_mean.max().rename(f'best_{{k}}'))"""
+
+PANEL_SIZE = [
+    "md:## Minimal panel per task\nSmallest panel that is non-inferior to all genes (corrected repeated-CV test), and the smallest reaching 90% sensitivity at 95% specificity.",
+    "pd.read_csv(f'{TAB}/minimal_panel.csv')",
+    "md:## AUC as the panel shrinks (logistic regression)",
+    "allg = summary[(summary.model == 'logreg') & (summary.selector == 'all_genes')].set_index(['cancer', 'task']).auc_mean.rename('all_genes')\n"
+    "rnd = summary[(summary.model == 'logreg') & (summary.selector == 'random') & (summary.k == 10)].set_index(['cancer', 'task']).auc_mean.rename('random_10')\n"
+    "pd.concat([allg, best(500), best(50), best(10), best(5), best(1), rnd], axis=1)",
+    "for f in sorted(glob.glob(f'{FIG}/auc_vs_k_*.png')) + [f'{FIG}/error_vs_k_logreg.png']:\n    display(Image(f))",
+]
+
+blood = nb([
+    "md:# 04 · Chapter 2: a blood test\nTumor-educated platelet RNA (Best et al. 2015, 2017). Here the signal is weaker than in tissue, and confounding by hospital, age and batch has to be ruled out.",
+    CHAPTER.format(d="results/blood"),
+    *PANEL_SIZE,
+    "md:## Confounding: what can metadata alone predict?\nIf hospital or age alone separates the groups, a gene model may be learning those instead of cancer.",
+    "pd.read_csv(f'{TAB}/confounders.csv')",
+    "md:### Site signature: platelet RNA of *non-cancer* people, VUMC vs other hospitals",
+    "pd.read_csv(f'{TAB}/site_signature.csv')",
+    "md:### Gene-model AUC inside the overlapping age range (45-75)",
+    "pd.read_csv(f'{TAB}/age_restricted.csv')",
+    "md:## The original authors' split\nGenes chosen and model fit on the authors' training + evaluation samples, scored once on their validation samples.",
+    "pd.read_csv(f'{TAB}/benchmark.csv')",
+    "md:## Calibration and decision curves (out-of-fold, repeat 0)",
+    "pd.read_csv(f'{TAB}/calibration.csv').groupby(['cancer', 'task', 'selector', 'k']).brier.first().unstack('k')",
+])
+
+external = nb([
+    "md:# 05 · Chapter 3: healthy controls and external validation\nUCSC Toil processes TCGA and GTEx with one pipeline, so tumors can be compared with tissue from people without cancer.",
+    CHAPTER.format(d="results/external"),
+    *PANEL_SIZE,
+    "md:## Frozen chapter-1 models on a new pipeline and truly healthy tissue",
+    "ext = pd.read_csv(f'{TAB}/external.csv')\n"
+    "ext.pivot_table(index=['tissue', 'selector', 'k'], columns='setting', values=['auc', 'spec']).round(3)",
+])
+
+harder = nb([
+    "md:# 06 · Chapter 4: harder tasks\nProblems where small panels should fail: adenocarcinoma vs squamous lung cancer, breast PAM50 subtypes, and pan-cancer tissue of origin.",
+    CHAPTER.format(d="results/harder"),
+    *PANEL_SIZE,
+    "md:## Consensus genes",
+    "cons = pd.read_csv(f'{TAB}/consensus.csv')\ncons[cons.panel == 'consensus10'][['cancer', 'task', 'gene', 'freq']]",
+])
+
+for name, n in [("01_eda", eda), ("02_results", results), ("03_biology", bio),
+                ("04_blood", blood), ("05_external", external), ("06_harder", harder)]:
     nbf.write(n, f"notebooks/{name}.ipynb")
     print("wrote", name)

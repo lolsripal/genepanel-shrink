@@ -9,3 +9,8 @@ results/smoke/*.parquet
 .DS_Store
 results/smoke/
 results/run.log
+# v2: per-chapter fold caches, CI output, run logs
+results/*/cache/
+results/ci/
+results/**/run.log
+results/run_v2.log

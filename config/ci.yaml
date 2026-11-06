@@ -1,0 +1,22 @@
+# Continuous-integration smoke test: synthetic data, no downloads, < 1 minute.
+seed: 0
+data_dir: data
+results_dir: results/ci
+pipeline: [run, analyze, report]
+
+datasets:
+  - {source: synthetic, name: SYNTH, task: binary, n: 240, p: 300}
+  - {source: synthetic, name: SYNTH, task: multiclass, n: 300, p: 300, n_classes: 4}
+
+preprocess: {}
+cv: {n_splits: 3, n_repeats: 1, n_jobs: 2}
+selection:
+  prefilter_k: 100
+  selectors: [univariate, variance, lasso, rfe, stability]
+  stability_subsamples: 5
+  panel_sizes: [20, 5, 1]
+  rfe_drop_frac: 0.2
+models: [logreg, rf]
+random_baseline: {n_draws: 3, models: [logreg]}
+prediction_models: [logreg]
+analysis: {delta_auc: 0.01, consensus_freq: 0.8, sens_target: 0.9}

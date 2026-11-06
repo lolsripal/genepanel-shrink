@@ -1,4 +1,4 @@
-# Full experiment: 2 cancers x 2 tasks x 5x5 CV. ~20 min on 8 cores.
+# Chapter 1 (tissue): TCGA BRCA/LUAD tumor vs adjacent normal, 2 tasks x 5x5 CV. ~30 min on 8 cores.
 seed: 42
 data_dir: data
 results_dir: results
@@ -20,7 +20,8 @@ cv:
 
 selection:
   prefilter_k: 2000      # univariate (ANOVA F) prefilter inside each training fold
-  selectors: [univariate, variance, lasso, mutual_info, rfe, shap]
+  selectors: [univariate, variance, lasso, mutual_info, rfe, shap, stability]
+  stability_subsamples: 50
   panel_sizes: [500, 100, 50, 20, 10, 5, 2, 1]
   rfe_drop_frac: 0.1
 
@@ -30,6 +31,9 @@ random_baseline:
   n_draws: 20
   models: [logreg]
 
+prediction_models: [logreg]   # out-of-fold predictions kept for calibration / decision curves
+
 analysis:
   delta_auc: 0.01        # "retains performance" = mean AUC within this of all-genes
   consensus_freq: 0.8    # gene in >= 80% of fold panels
+  sens_target: 0.9       # minimal panel = smallest k reaching 90% sensitivity at 95% specificity

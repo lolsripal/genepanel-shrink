@@ -1,0 +1,5 @@
+cancer,task,model,n_genes_all,auc_all_genes,auc_best_1,auc_best_10,smallest_retained_k,auc_random_10,smallest_k_sens90,sens_all_genes
+BRCA_GTEx,normal_vs_healthy,logreg,13550,1.0,0.9960403099316143,1.0,2.0,0.989257095802748,1,1.0
+BRCA_GTEx,tumor_vs_healthy,logreg,13482,1.0,0.9996276301256821,1.0,1.0,0.9931779534575059,1,1.0
+LUAD_GTEx,normal_vs_healthy,logreg,13714,1.0,0.9934263689526847,1.0,2.0,0.9890744559936937,1,1.0
+LUAD_GTEx,tumor_vs_healthy,logreg,13802,0.9999932386747803,0.9948044691772361,0.9999797298441163,2.0,0.9899004260982316,1,1.0

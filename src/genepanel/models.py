@@ -11,11 +11,13 @@ from sklearn.utils.class_weight import compute_sample_weight
 
 
 def make_model(name: str, y: np.ndarray, seed: int = 0):
+    multiclass = len(np.unique(y)) > 2
     if name == "logreg":
         # only model with tuning: C by inner 3-fold CV on the training split
-        clf = LogisticRegressionCV(Cs=[0.001, 0.01, 0.1, 1.0, 10.0], cv=3, scoring="roc_auc", l1_ratios=(0.0,),
-                                   class_weight="balanced", max_iter=5000, n_jobs=1,
-                                   use_legacy_attributes=False)
+        clf = LogisticRegressionCV(Cs=[0.001, 0.01, 0.1, 1.0, 10.0], cv=3,
+                                   scoring="roc_auc_ovr" if multiclass else "roc_auc",
+                                   l1_ratios=(0.0,), class_weight="balanced", max_iter=5000,
+                                   n_jobs=1, use_legacy_attributes=False)
     elif name == "rf":
         clf = RandomForestClassifier(n_estimators=300, max_features="sqrt", min_samples_leaf=2,
                                      class_weight="balanced_subsample", n_jobs=1,
@@ -23,10 +25,14 @@ def make_model(name: str, y: np.ndarray, seed: int = 0):
     elif name == "xgb":
         from xgboost import XGBClassifier
 
-        pos = y.sum()
-        clf = XGBClassifier(n_estimators=300, max_depth=3, learning_rate=0.05, subsample=0.8,
-                            colsample_bytree=0.8, scale_pos_weight=(len(y) - pos) / max(pos, 1),
-                            tree_method="hist", n_jobs=1, random_state=seed, verbosity=0)
+        kw = dict(n_estimators=300, max_depth=3, learning_rate=0.05, subsample=0.8,
+                  colsample_bytree=0.8, tree_method="hist", n_jobs=1, random_state=seed,
+                  verbosity=0)
+        if multiclass:  # imbalance handled with balanced sample weights in fit_predict
+            clf = XGBClassifier(**kw)
+        else:
+            pos = y.sum()
+            clf = XGBClassifier(scale_pos_weight=(len(y) - pos) / max(pos, 1), **kw)
     elif name == "mlp":
         # "simple neural network": two small hidden layers, L2 + early stopping
         clf = MLPClassifier(hidden_layer_sizes=(64, 32), alpha=1e-3, learning_rate_init=1e-3,
@@ -37,11 +43,23 @@ def make_model(name: str, y: np.ndarray, seed: int = 0):
     return make_pipeline(StandardScaler(), clf)
 
 
-def fit_predict(name: str, Xtr, ytr, Xte, seed: int = 0) -> np.ndarray:
-    """Fit on train, return P(tumor) on test."""
+def fit(name: str, Xtr, ytr, seed: int = 0):
     model = make_model(name, ytr, seed)
     kw = {}
-    if name == "mlp":  # MLP has no class_weight; use balanced sample weights instead
-        kw["mlpclassifier__sample_weight"] = compute_sample_weight("balanced", ytr)
-    model.fit(Xtr, ytr, **kw)
-    return model.predict_proba(Xte)[:, 1]
+    multiclass = len(np.unique(ytr)) > 2
+    if name == "mlp" or (name == "xgb" and multiclass):
+        # no class_weight option: use balanced sample weights instead
+        step = "mlpclassifier" if name == "mlp" else "xgbclassifier"
+        kw[f"{step}__sample_weight"] = compute_sample_weight("balanced", ytr)
+    return model.fit(Xtr, ytr, **kw)
+
+
+def proba(model, X) -> np.ndarray:
+    """Binary: P(positive class), shape (n,). Multiclass: (n, n_classes)."""
+    P = model.predict_proba(X)
+    return P[:, 1] if P.shape[1] == 2 else P
+
+
+def fit_predict(name: str, Xtr, ytr, Xte, seed: int = 0) -> np.ndarray:
+    """Fit on train, return P(cancer) on test (class probabilities if multiclass)."""
+    return proba(fit(name, Xtr, ytr, seed), Xte)

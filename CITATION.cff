@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this code or its results, please cite it as below."
+title: "genepanel-shrink: how small can a gene-expression panel get before cancer detection fails?"
+authors:
+  - family-names: Vajinepalli
+    given-names: Sripal
+version: 2.0.0
+date-released: 2026-11-05
+license: MIT
+repository-code: "https://github.com/lolsripal/genepanel-shrink"
+url: "https://lolsripal.github.io/genepanel-shrink/"
+keywords: [cancer detection, gene expression, feature selection, liquid biopsy, TCGA, GTEx, machine learning]

@@ -1,0 +1,3 @@
+cancer,contrast,n_vumc,n_other,genes,auc_mean,auc_min,auc_max
+GSE89843,non-cancer: VUMC vs other hospitals,317,60,all,0.9021474041005291,0.7962962962962963,0.9642857142857143
+GSE89843,non-cancer: VUMC vs other hospitals,317,60,10,0.6735325727513228,0.5052910052910053,0.8518518518518519

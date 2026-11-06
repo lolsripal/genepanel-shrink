@@ -3,21 +3,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: a single reading column (~68ch) with full-bleed figure rows; the brief checklist is the spine. */
+/* Layout: one reading column (~44rem) with wider figure rows; four chapters move from easy (tissue) to realistic (blood, new data). */
 :root {
-  --bg: #f6f8f8;        /* cool lab-paper white, slight teal bias */
-  --panel: #ffffff;
-  --ink: #102127;
-  --ink-2: #4a5a60;
-  --rule: #d9e1e3;
-  --accent: #1f6f8b;    /* text accent / links */
-  --sel: #2a78d6;       /* chart: selected genes */
-  --var: #eb6834;       /* chart: top-variance genes */
-  --rand: #8d989c;      /* chart: random genes */
-  --band: rgba(141,152,156,.22);
-  --selband: rgba(42,120,214,.16);
-  --up: #a8471d; --down: #1d5fa8;
-  --chip: #e8eef0;
+  --bg: #f6f8f8; --panel: #ffffff; --ink: #102127; --ink-2: #4a5a60; --rule: #d9e1e3;
+  --accent: #1f6f8b;
+  --c1: #2a78d6;   /* best 10-gene panel / selected genes */
+  --c2: #eb6834;   /* best single gene / top-variance */
+  --c3: #1baf7a;   /* external setting */
+  --rand: #8d989c; --band: rgba(141,152,156,.22); --selband: rgba(42,120,214,.16);
+  --warn: #a8471d; --chip: #e8eef0;
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -25,17 +19,15 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1719; --panel: #152024; --ink: #e6eef0; --ink-2: #a3b3b8; --rule: #2a3a3f;
-    --accent: #6cc0dd; --sel: #3987e5; --var: #d95926; --rand: #7d8a8f;
-    --band: rgba(125,138,143,.25); --selband: rgba(57,135,229,.22);
-    --up: #f0956a; --down: #79aef0; --chip: #1f2d32; color-scheme: dark;
+    --bg: #0f1719; --panel: #152024; --ink: #e6eef0; --ink-2: #a3b3b8; --rule: #2a3a3f; --accent: #6cc0dd;
+    --c1: #3987e5; --c2: #d95926; --c3: #199e70; --rand: #7d8a8f;
+    --band: rgba(125,138,143,.25); --selband: rgba(57,135,229,.22); --warn: #f0956a; --chip: #1f2d32; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1719; --panel: #152024; --ink: #e6eef0; --ink-2: #a3b3b8; --rule: #2a3a3f;
-  --accent: #6cc0dd; --sel: #3987e5; --var: #d95926; --rand: #7d8a8f;
-  --band: rgba(125,138,143,.25); --selband: rgba(57,135,229,.22);
-  --up: #f0956a; --down: #79aef0; --chip: #1f2d32; color-scheme: dark;
+  --bg: #0f1719; --panel: #152024; --ink: #e6eef0; --ink-2: #a3b3b8; --rule: #2a3a3f; --accent: #6cc0dd;
+  --c1: #3987e5; --c2: #d95926; --c3: #199e70; --rand: #7d8a8f;
+  --band: rgba(125,138,143,.25); --selband: rgba(57,135,229,.22); --warn: #f0956a; --chip: #1f2d32; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: var(--step-0); line-height: 1.6; }
@@ -47,339 +39,463 @@ h2 { font-size: var(--step-2); margin-top: 3.2rem; margin-bottom: .8rem; padding
 h3 { font-size: var(--step-1); font-weight: 500; margin-top: 1.8rem; margin-bottom: .5rem; }
 p { margin: 0 0 1rem; }
 a { color: var(--accent); }
-a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .eyebrow { font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: .8rem; }
+.chapter-tag { font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: .35rem; font-weight: 500; }
 .lede { font-size: var(--step-1); line-height: 1.5; margin-top: 1rem; }
-.answer { margin-top: 1.6rem; padding: 1.1rem 1.25rem; background: var(--panel); border: 1px solid var(--rule); border-left: 4px solid var(--sel); border-radius: 6px; }
-.answer p:last-child { margin: 0; }
+.answer { margin-top: 1.4rem; padding: 1.1rem 1.25rem; background: var(--panel); border: 1px solid var(--rule); border-left: 4px solid var(--c1); border-radius: 6px; }
+.answer ul { margin: .4rem 0 0; } .answer p:last-child, .answer ul:last-child { margin-bottom: 0; }
+.callout { padding: .9rem 1.1rem; background: var(--panel); border: 1px solid var(--rule); border-left: 4px solid var(--warn); border-radius: 6px; margin: 1rem 0 1.2rem; }
+.callout p:last-child { margin: 0; }
 .meta { font-size: var(--step--1); color: var(--ink-2); margin-top: 1rem; }
 code, .mono { font-family: var(--font-mono); font-size: .9em; }
-.gene { font-family: var(--font-mono); font-size: .85em; background: var(--chip); padding: .05em .4em; border-radius: 4px; white-space: nowrap; }
-.up { color: var(--up); } .down { color: var(--down); }
+.gene { font-family: var(--font-mono); font-size: .8em; background: var(--chip); padding: .05em .4em; border-radius: 4px; white-space: nowrap; display: inline-block; margin: 0 .2rem .3rem 0; }
+.nav { display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin-top: 1.2rem; font-size: var(--step--1); }
+.nav a { text-decoration: none; border-bottom: 1px solid var(--rule); }
 
-/* brief checklist */
-.brief { display: grid; gap: 0; margin-top: 1rem; border-top: 1px solid var(--rule); }
-.brief-row { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 1.25rem; padding: .9rem 0; border-bottom: 1px solid var(--rule); }
-.brief-row > * { min-width: 0; }
-.brief-ask { font-weight: 600; }
-.brief-ask small { display: block; font-weight: 400; color: var(--ink-2); font-family: var(--font-mono); font-size: var(--step--1); margin-top: .2rem; }
-.brief-res p { margin: 0 0 .3rem; }
-.tag { display: inline-block; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; padding: .05rem .45rem; border-radius: 3px; border: 1px solid currentColor; margin-right: .4rem; vertical-align: .1em; }
-.tag.done { color: var(--sel); }
-.tag.caveat { color: var(--var); }
-@media (max-width: 640px) { .brief-row { grid-template-columns: 1fr; gap: .35rem; } }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+.stat { border-top: 2px solid var(--ink); padding-top: .5rem; min-width: 0; }
+.stat b { display: block; font-family: var(--font-display); font-size: 1.9rem; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: var(--step--1); color: var(--ink-2); }
 
-/* charts */
+.figure { margin-top: 1rem; position: relative; min-width: 0; }
+.figure svg { width: 100%; height: auto; display: block; overflow: visible; }
+.figure svg text { fill: var(--ink-2); font-family: var(--font-mono); font-size: 10px; }
+.figure svg text.rowlabel { font-family: var(--font-body); font-size: 11px; fill: var(--ink); }
+.figure svg text.grouplabel { font-family: var(--font-mono); font-size: 10px; fill: var(--accent); letter-spacing: .06em; text-transform: uppercase; }
+.figure h4 { margin: 0 0 .2rem; font-family: var(--font-body); font-size: var(--step--1); font-weight: 600; }
 .charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; margin-top: 1rem; }
 @media (max-width: 760px) { .charts { grid-template-columns: 1fr; } }
-.chart { min-width: 0; position: relative; }
-.chart h4 { margin: 0 0 .2rem; font-family: var(--font-body); font-size: var(--step--1); font-weight: 600; }
-.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
-.chart svg text { fill: var(--ink-2); font-family: var(--font-mono); font-size: 10px; }
 .legend { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: var(--step--1); color: var(--ink-2); margin-top: .8rem; }
 .legend span { display: inline-flex; align-items: center; gap: .4rem; }
 .sw { width: 18px; height: 3px; border-radius: 2px; display: inline-block; }
 .sw.box { height: 10px; }
-.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .5rem .65rem; font-size: .78rem; line-height: 1.45; box-shadow: 0 4px 16px rgba(0,0,0,.12); min-width: 12rem; z-index: 2; font-variant-numeric: tabular-nums; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.tip { position: absolute; pointer-events: none; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: .5rem .65rem; font-size: .78rem; line-height: 1.45; box-shadow: 0 4px 16px rgba(0,0,0,.12); min-width: 12rem; max-width: 20rem; z-index: 2; font-variant-numeric: tabular-nums; }
 .tip b { font-family: var(--font-mono); }
 .tip .row { display: flex; justify-content: space-between; gap: 1rem; }
+.controls { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; margin-top: .8rem; font-size: var(--step--1); }
+select { font: inherit; font-size: var(--step--1); padding: .35rem .5rem; border: 1px solid var(--rule); border-radius: 5px; background: var(--panel); color: var(--ink); max-width: 100%; }
 
-/* tables */
 .tbl { overflow-x: auto; margin: .6rem 0 1.2rem; }
 table { border-collapse: collapse; font-size: .875rem; font-variant-numeric: tabular-nums; min-width: 100%; }
 th, td { text-align: right; padding: .38rem .7rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
 th:first-child, td:first-child { text-align: left; }
 th { font-weight: 600; font-size: .78rem; color: var(--ink-2); text-transform: uppercase; letter-spacing: .04em; }
-td.hi { font-weight: 600; color: var(--ink); }
-td.lo { color: var(--var); }
-caption { caption-side: bottom; text-align: left; font-size: var(--step--1); color: var(--ink-2); padding-top: .4rem; }
+td.hi { font-weight: 600; } td.lo { color: var(--warn); }
+caption { caption-side: bottom; text-align: left; font-size: var(--step--1); color: var(--ink-2); padding-top: .4rem; white-space: normal; }
 details { margin-top: .6rem; }
 summary { cursor: pointer; font-size: var(--step--1); color: var(--accent); }
-
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem; margin: 1.2rem 0; }
-.stat { border-top: 2px solid var(--ink); padding-top: .5rem; }
-.stat b { display: block; font-family: var(--font-display); font-size: 1.9rem; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.stat span { font-size: var(--step--1); color: var(--ink-2); }
 ul { padding-left: 1.2rem; margin: 0 0 1rem; } li { margin-bottom: .4rem; }
+.brief { display: grid; margin-top: 1rem; border-top: 1px solid var(--rule); }
+.brief-row { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: 1.25rem; padding: .8rem 0; border-bottom: 1px solid var(--rule); }
+.brief-row > * { min-width: 0; }
+.brief-ask { font-weight: 600; }
+@media (max-width: 640px) { .brief-row { grid-template-columns: 1fr; gap: .3rem; } }
+.genes-list { display: grid; gap: .5rem; }
+.genes-list div { min-width: 0; }
+.genes-list b { display: block; font-size: var(--step--1); font-weight: 600; margin-bottom: .2rem; }
 footer { margin-top: 3rem; font-size: var(--step--1); color: var(--ink-2); border-top: 1px solid var(--rule); padding-top: 1rem; }
 </style>
 
 <div class="wrap">
 <header class="col">
-  <div class="eyebrow">Research report · TCGA BRCA &amp; LUAD · RNA-seq</div>
-  <h1>Can AI detect cancer using only a small gene signature?</h1>
-  <p class="lede">We started from about 17,700 genes and asked how far a panel can shrink before cancer detection gets worse, and whether the genes that survive mean anything biologically.</p>
+  <div class="eyebrow">Research project · TCGA, GTEx and platelet RNA · 19 detection tasks</div>
+  <h1>How small can a cancer test get before it stops working?</h1>
+  <p class="lede">I took gene-expression data from tumors, healthy tissue and blood, and kept shrinking the set of genes a model was allowed to use, from <span data-f="ch1_genes"></span> down to one, to find where cancer detection breaks.</p>
   <div class="answer">
-    <p><strong>Short answer.</strong> In tumor tissue, one or two well-chosen genes detect breast and lung cancer as accurately as all 17,700, including Stage I tumors. That is over 99.99% of the genes removed with no measurable loss. The reason is that tumor and normal tissue differ in hundreds of genes at once, so the signal is extremely redundant. Gene selection still matters: a random single gene reaches only AUC ≈ 0.70, versus ≈ 0.99 for a selected one.</p>
+    <p><strong>Short answer: it depends on where you look, and the easy cases are misleading.</strong></p>
+    <ul>
+      <li><strong>In tumor tissue</strong>, one or two genes are enough (AUC <span data-f="ch1_brca_1"></span>), because tumor and normal tissue differ in hundreds of genes at once.</li>
+      <li><strong>In blood</strong>, a real early-detection setting, small panels lose accuracy: 1 gene reaches AUC <span data-f="ch2_1"></span>, 10 genes <span data-f="ch2_10"></span>, all genes <span data-f="ch2_all"></span>. And part of the signal comes from which hospital the blood came from and how old the patients were, not from cancer.</li>
+      <li><strong>On new data</strong>, tiny panels are the first to break. A 1-gene lung test that rejected <span data-f="ch3_lung_1_in_spec"></span> of normal samples in its own dataset rejected only <span data-f="ch3_lung_1_ex_spec"></span> of healthy lungs from another pipeline.</li>
+    </ul>
   </div>
-  <p class="meta">5×5 repeated cross-validation, grouped by patient, with gene selection redone inside every training fold. Code, tables and notebooks: <a href="https://github.com/lolsripal/genepanel-shrink" target="_blank" rel="noopener">github.com/lolsripal/genepanel-shrink</a>.</p>
+  <nav class="nav" aria-label="Sections">
+    <a href="#ladder">At a glance</a><a href="#tissue">1 · Tissue</a><a href="#blood">2 · Blood</a><a href="#external">3 · Healthy controls</a><a href="#harder">4 · Harder tasks</a><a href="#explorer">Explore every task</a><a href="#biology">Genes</a><a href="#meaning">What it means</a><a href="#methods">Methods</a>
+  </nav>
 </header>
 
-<section class="col" aria-labelledby="brief">
-  <h2 id="brief">The brief, point by point</h2>
-  <div class="brief">
-    <div class="brief-row"><div class="brief-ask">Select 1–2 cancer types with public expression data</div>
-      <div class="brief-res"><p><span class="tag done">Done</span>Breast invasive carcinoma (BRCA) and lung adenocarcinoma (LUAD) from TCGA via UCSC Xena: 1,211 and 573 samples. Primary tumors are compared with adjacent normal tissue, and a second task uses <strong>Stage I tumors only</strong> to match the early-detection framing. <a href="#data">Data</a></p></div></div>
-    <div class="brief-row"><div class="brief-ask">Start with hundreds or thousands of genes</div>
-      <div class="brief-res"><p><span class="tag done">Done</span>20,530 genes in the source matrix. After removing unexpressed and flat genes (without looking at labels), 17,699–17,955 remain, and the reference models use all of them.</p></div></div>
-    <div class="brief-row"><div class="brief-ask">Feature selection<small>LASSO · mutual information · RFE · SHAP</small></div>
-      <div class="brief-res"><p><span class="tag done">Done</span>All four, plus a univariate t-test ranking and two baselines: the most variable genes (label-free) and 20 random draws per panel size. <a href="#methods">Methods compared</a></p></div></div>
-    <div class="brief-row"><div class="brief-ask">Progressively smaller models<small>500 → 100 → 50 → 20 → 10</small></div>
-      <div class="brief-res"><p><span class="tag done">Done</span>Extended down to <strong>5, 2 and 1</strong> genes, because nothing degraded at 10. <a href="#shrink">Shrinking curves</a></p></div></div>
-    <div class="brief-row"><div class="brief-ask">Compare four models<small>logistic regression · random forest · XGBoost · neural net</small></div>
-      <div class="brief-res"><p><span class="tag done">Done</span>All four agree within 0.008 AUC at 10 genes. With a single gene, logistic regression and the neural net beat the tree models slightly. <a href="#models">Model comparison</a></p></div></div>
-    <div class="brief-row"><div class="brief-ask">Does the smallest panel retain performance?</div>
-      <div class="brief-res"><p><span class="tag done">Yes</span>1–2 genes are statistically non-inferior to all genes for every model in both cancers and both tasks. The best 2-gene panel catches 99.4–99.9% of tumors at 95% specificity. <a href="#retain">Retention test</a></p></div></div>
-    <div class="brief-row"><div class="brief-ask">Do the selected genes have known biology?</div>
-      <div class="brief-res"><p><span class="tag done">Yes</span>They have far more literature support than random genes and match known tumor-stroma and tissue-identity programs. <span class="tag caveat">Caveat</span>They are mostly normal-tissue genes that tumors lose, and they are not enriched for cancer driver genes. <a href="#biology">Biology</a></p></div></div>
-    <div class="brief-row"><div class="brief-ask">How much biological information can we remove?</div>
-      <div class="brief-res"><p><span class="tag done">Answered</span>More than 99.99% of genes in this setting. Several hundred different genes each carry nearly the full signal, so what matters is which few you keep. <a href="#answer">Full answer</a></p></div></div>
-  </div>
-</section>
-
-<section aria-labelledby="data">
+<section aria-labelledby="ladder">
   <div class="col">
-  <h2 id="data">Data and the ceiling problem</h2>
-  <p>TCGA labels each sample with a barcode type: <code>-01</code> for primary tumor, <code>-11</code> for solid tissue normal. Most normals come from the same patients as tumors, so cross-validation keeps each patient's samples in a single fold.</p>
+    <h2 id="ladder">At a glance: 19 tasks, from easy to hard</h2>
+    <p>Each row is one detection task. Dots show the AUC (1.0 is perfect, 0.5 is guessing) of a model using all genes, the best 10 genes, the best single gene, and 10 random genes. Where the dots bunch up on the right, small panels are enough. Where they spread out, they are not.</p>
   </div>
-  <div class="tbl col"><table>
-    <thead><tr><th>Task</th><th>Samples</th><th>Tumor</th><th>Normal</th><th>Genes</th></tr></thead>
-    <tbody>
-      <tr><td>BRCA tumor vs normal</td><td>1,211</td><td>1,097</td><td>114</td><td>17,699</td></tr>
-      <tr><td>BRCA Stage I vs normal</td><td>296</td><td>182</td><td>114</td><td>17,755</td></tr>
-      <tr><td>LUAD tumor vs normal</td><td>573</td><td>514</td><td>59</td><td>17,944</td></tr>
-      <tr><td>LUAD Stage I vs normal</td><td>333</td><td>274</td><td>59</td><td>17,955</td></tr>
-    </tbody></table></div>
-  <div class="stats">
-    <div class="stat"><b>459</b><span>BRCA genes that alone reach AUC ≥ 0.95</span></div>
-    <div class="stat"><b>779</b><span>LUAD genes that alone reach AUC ≥ 0.95</span></div>
-    <div class="stat"><b>≥ 0.997</b><span>AUC of every model using all genes</span></div>
-    <div class="stat"><b>No drop</b><span>for Stage I tumors versus all stages</span></div>
-  </div>
-  <p class="col">That is the main caveat for the whole study. Distinguishing tumor tissue from normal tissue is easy, because hundreds of genes each do it almost perfectly. So "small panels work" is expected. The informative comparisons are selected genes against random genes, and which genes get selected.</p>
-</section>
-
-<section aria-labelledby="shrink">
-  <div class="col">
-  <h2 id="shrink">AUC as the panel shrinks</h2>
-  <p>Logistic regression, mean over 25 test folds. The blue line is the best of the five supervised selectors at each size, and the light blue band spans all five. Hover a panel size for exact values.</p>
-  </div>
-  <div class="charts" id="charts"></div>
+  <div class="figure" id="ladder-chart"></div>
   <div class="legend" aria-hidden="true">
-    <span><i class="sw" style="background:var(--sel)"></i>Selected genes (best method)</span>
-    <span><i class="sw box" style="background:var(--selband)"></i>Range across 5 methods</span>
-    <span><i class="sw" style="background:var(--rand)"></i>Random genes (mean)</span>
-    <span><i class="sw box" style="background:var(--band)"></i>Random, 5–95%</span>
-    <span><i class="sw" style="background:var(--var)"></i>Most variable genes</span>
+    <span><i class="dot" style="background:var(--ink)"></i>All genes</span>
+    <span><i class="dot" style="background:var(--c1)"></i>Best 10 genes</span>
+    <span><i class="dot" style="background:var(--c2)"></i>Best single gene</span>
+    <span><i class="dot" style="background:var(--rand)"></i>10 random genes</span>
+  </div>
+  <details><summary>Show as a table</summary><div class="tbl" id="ladder-table"></div></details>
+</section>
+
+<section aria-labelledby="tissue" class="col">
+  <h2 id="tissue"><span class="chapter-tag">Chapter 1</span>Tumor tissue: almost too easy</h2>
+  <p>TCGA tumors vs the normal tissue next to them, for breast and lung adenocarcinoma, including Stage I tumors. Genes are selected with six methods (t-test, LASSO, mutual information, recursive feature elimination, SHAP and stability selection), inside each training fold, and models are tested on patients they have never seen.</p>
+  <div class="stats">
+    <div class="stat"><b data-f="ch1_brca_1"></b><span>AUC of the best single gene, breast</span></div>
+    <div class="stat"><b data-f="ch1_luad_1"></b><span>AUC of the best single gene, lung</span></div>
+    <div class="stat"><b data-f="ch1_rand_1"></b><span>AUC of a random single gene</span></div>
+    <div class="stat"><b data-f="ch1_min_k"></b><span>genes needed to match all <span data-f="ch1_genes"></span> (largest over the 4 tasks)</span></div>
+  </div>
+  <p>Hundreds of genes each separate tumor from normal tissue almost perfectly, so this result says more about the task than about the methods. The genes that matter are mostly normal-tissue genes that tumors lose (fat, vessels, alveoli), plus stroma-remodelling genes such as <span class="gene">COL10A1</span> and <span class="gene">MMP11</span>. The next three chapters test whether that optimism survives harder conditions.</p>
+</section>
+
+<section aria-labelledby="blood">
+  <div class="col">
+  <h2 id="blood"><span class="chapter-tag">Chapter 2</span>A blood test: where panel size starts to matter</h2>
+  <p>Tumor-educated platelets are blood cells that pick up RNA changes when a tumor is present. I reanalyzed two public studies: 779 people tested for lung cancer (GSE89843), and 285 people with one of six cancers or none (GSE68086).</p>
+  <div class="stats">
+    <div class="stat"><b data-f="ch2_1"></b><span>AUC, best single gene (lung cancer vs non-cancer)</span></div>
+    <div class="stat"><b data-f="ch2_10"></b><span>AUC, best 10 genes</span></div>
+    <div class="stat"><b data-f="ch2_all"></b><span>AUC, all 4,694 genes</span></div>
+    <div class="stat"><b data-f="ch2_rand10"></b><span>AUC, 10 random genes</span></div>
+  </div>
+  <p>Unlike tissue, no small panel matched the full model in any blood task. Accuracy climbs steadily from 1 to 100 genes and beyond. Gene selection still matters a lot: the best 10 genes beat 10 random genes by a wide margin.</p>
+  <h3>Is the model detecting cancer, or the hospital?</h3>
+  <div class="callout"><p>In this dataset, only one hospital (VUMC) sent both cancer and non-cancer samples. Every other hospital sent only one kind: cancers from MGH and NKI, controls from UMCU, AMC and UMEA. Cancer patients were also about 17 years older. A model that sees <strong>only</strong> hospital, age, sex and smoking, and no genes at all, reaches AUC <span data-f="ch2_meta"></span>.</p></div>
+  </div>
+  <div class="tbl" id="conf-table"></div>
+  <div class="col">
+  <p>Four checks show how much real signal is left:</p>
+  <ul>
+    <li><strong>Site fingerprint.</strong> Among people <em>without</em> cancer, platelet RNA tells VUMC samples from other hospitals' samples with AUC <span data-f="ch2_site_all"></span>. So a hospital signature is in the RNA itself.</li>
+    <li><strong>One hospital only.</strong> Within VUMC, where hospital cannot help, all genes still reach AUC <span data-f="ch2_vumc_all"></span>.</li>
+    <li><strong>Matched cohort.</strong> In the authors' age/sex/smoking-matched subset, metadata alone drops to AUC <span data-f="ch2_matched_meta"></span>, while genes keep <span data-f="ch2_matched_all"></span> (10 genes: <span data-f="ch2_matched_10"></span>). This is the cleanest evidence of a real cancer signal.</li>
+    <li><strong>Early cancer.</strong> For non-metastatic cancer, age + sex + smoking alone reach AUC <span data-f="ch2_nonmet_demo"></span>, about as high as the gene model (<span data-f="ch2_nonmet_all"></span>). With only 57 such patients, this task cannot show a cancer-specific signal.</li>
+  </ul>
+  <h3>Testing on hospitals the model never saw</h3>
+  <p>The original authors' training set (<span data-f="ch2_bench_ntrain"></span> people) came from VUMC, with a few controls from UMCU. Replaying their split, cancers from VUMC are detected with AUC <span data-f="ch2_bench_seen"></span>, but cancers from hospitals missing from training (mainly MGH and NKI) only reach <span data-f="ch2_bench_unseen"></span> (10 genes: <span data-f="ch2_bench_unseen_10"></span>). On the matched cohort's validation set, all genes reach <span data-f="ch2_bench_matched"></span> and 10 genes <span data-f="ch2_bench_matched_10"></span>.</p>
+  <p class="meta" id="published"></p>
+  </div>
+  <div class="tbl" id="bench-table"></div>
+  <div class="col">
+  <h3>Would it help to act on the test?</h3>
+  <p>A decision curve asks whether using the test to decide who gets a follow-up scan beats scanning everyone or no one. Net benefit counts true positives per person, and charges each false positive at the odds of the chosen risk threshold. Above the "scan everyone" line, the test adds value.</p>
+  </div>
+  <div class="figure" id="dca-chart"></div>
+  <div class="legend" aria-hidden="true">
+    <span><i class="sw" style="background:var(--ink)"></i>All genes</span>
+    <span><i class="sw" style="background:var(--c1)"></i>Best 10 genes</span>
+    <span><i class="sw" style="background:var(--c2)"></i>Best single gene</span>
+    <span><i class="sw" style="background:var(--rand)"></i>Scan everyone</span>
+  </div>
+  <div class="col">
+  <p>The six-cancer study tells a similar story: any cancer vs healthy reaches AUC <span data-f="ch2_pan_all"></span> with all genes and <span data-f="ch2_pan_10"></span> with 10. Naming which of the six cancers someone has is much harder: AUC <span data-f="ch2_type_all"></span>, balanced accuracy <span data-f="ch2_type_balacc"></span> with all genes, and AUC <span data-f="ch2_type_10"></span> with 10.</p>
+  </div>
+</section>
+
+<section aria-labelledby="external">
+  <div class="col">
+  <h2 id="external"><span class="chapter-tag">Chapter 3</span>Healthy controls and new data</h2>
+  <p>TCGA's "normal" samples come from cancer patients. To compare tumors with truly healthy tissue, I used the UCSC Toil dataset, which runs TCGA and GTEx (tissue from people without cancer) through the same RNA-seq pipeline.</p>
+  <div class="callout"><p><strong>A warning from the controls.</strong> TCGA adjacent-normal tissue vs GTEx healthy tissue, where both groups are "normal", can be told apart with AUC <span data-f="ch3_study_2"></span> using just 2 genes; even one random gene gives <span data-f="ch3_study_rand1"></span>. The two studies differ so much (in collection, surgery and processing) that "tumor vs GTEx" cannot be read as tumor vs healthy. Any model trained on it partly learns which study a sample came from.</p></div>
+  <p>A cleaner test: freeze the Chapter 1 models, which were trained on TCGA tumors vs adjacent normals in the original pipeline, and apply them unchanged to tumors from <em>other</em> patients plus GTEx healthy tissue in the Toil pipeline. Each gene is matched to the training scale using samples that exist in both pipelines, from training patients only.</p>
+  </div>
+  <div class="charts" id="ext-charts"></div>
+  <div class="legend" aria-hidden="true">
+    <span><i class="sw" style="background:var(--c1)"></i>Original data (adjacent normal)</span>
+    <span><i class="sw" style="background:var(--c3)"></i>New pipeline, healthy tissue</span>
+  </div>
+  <div class="col">
+  <p>Ranking ability (AUC) mostly survives, but the <strong>decision threshold does not</strong>, and small panels suffer most. In lung, a 1-gene test correctly rejects <span data-f="ch3_lung_1_in_spec"></span> of normal samples in its own data but only <span data-f="ch3_lung_1_ex_spec"></span> of healthy lungs from the new pipeline. With 100 genes the drop is much smaller: <span data-f="ch3_lung_100_in_spec"></span> to <span data-f="ch3_lung_100_ex_spec"></span>. Breast holds up better (1 gene: <span data-f="ch3_breast_1_in_spec"></span> to <span data-f="ch3_breast_1_ex_spec"></span>).</p>
+  </div>
+</section>
+
+<section aria-labelledby="harder" class="col">
+  <h2 id="harder"><span class="chapter-tag">Chapter 4</span>Harder questions: telling cancers apart</h2>
+  <p>Detection asks "cancer or not?". These tasks ask "which kind?". They show where the panel-size curve really bends.</p>
+  <ul>
+    <li><strong>Lung adenocarcinoma vs squamous carcinoma:</strong> 1 gene reaches AUC <span data-f="ch4_hist_1"></span>, 10 genes <span data-f="ch4_hist_10"></span>, all genes <span data-f="ch4_hist_all"></span> (10 random genes: <span data-f="ch4_hist_rand10"></span>). Smallest panel matching all genes: <span data-f="ch4_hist_mink"></span>.</li>
+    <li><strong>Breast cancer PAM50 subtypes (5 classes):</strong> balanced accuracy <span data-f="ch4_pam50_balacc_1"></span> with 1 gene, <span data-f="ch4_pam50_balacc_10"></span> with 10, <span data-f="ch4_pam50_balacc_all"></span> with all genes. Smallest panel matching all genes on AUC: <span data-f="ch4_pam50_mink"></span>.</li>
+    <li><strong>Which of 12 cancer types a tumor is:</strong> balanced accuracy <span data-f="ch4_too_balacc_1"></span> with 1 gene, <span data-f="ch4_too_balacc_10"></span> with 10, <span data-f="ch4_too_balacc_all"></span> with all genes (chance: 8%). Smallest panel matching all genes on AUC: <span data-f="ch4_too_mink"></span>.</li>
+  </ul>
+  <p>What sets the panel size is how distinct the groups are, not how many there are. Twelve tissues of origin each have their own lineage genes (<span class="gene">TG</span> for thyroid, <span class="gene">NKX3-1</span> for prostate, <span class="gene">GFAP</span> for brain, <span class="gene">GATA3</span> for breast and bladder), so about 10 genes, roughly one per tissue, are enough. Five breast subtypes shade into each other along estrogen-receptor, HER2 and proliferation programs, so they need about 50 genes. The selected genes are textbook markers: <span class="gene">ERBB2</span> (HER2), <span class="gene">ESR1</span>, <span class="gene">FOXA1</span> and <span class="gene">FOXC1</span> for breast subtypes, and the squamous keratins <span class="gene">KRT5</span> and <span class="gene">DSG3</span> for lung. A single gene can draw one boundary, so it cannot name 12 cancer types.</p>
+</section>
+
+<section aria-labelledby="explorer">
+  <div class="col">
+    <h2 id="explorer">Explore every task</h2>
+    <p>AUC as the panel shrinks, for any of the 19 tasks (logistic regression, mean over test folds). The blue line is the best of six selection methods at each size, the light blue band spans all six, and the gray band is random genes. Hover for exact values.</p>
+  </div>
+  <div class="controls"><label for="task-select">Task</label><select id="task-select"></select></div>
+  <div class="figure" id="explorer-chart" style="max-width:44rem"></div>
+  <div class="legend" aria-hidden="true">
+    <span><i class="sw" style="background:var(--c1)"></i>Selected genes (best method)</span>
+    <span><i class="sw box" style="background:var(--selband)"></i>Range across 6 methods</span>
+    <span><i class="sw" style="background:var(--rand)"></i>Random genes</span>
+    <span><i class="sw" style="background:var(--c2)"></i>Most variable genes</span>
     <span><i class="sw" style="background:var(--ink);height:1px"></i>All genes</span>
   </div>
-  <details><summary>Show the chart data as a table</summary><div class="tbl" id="curve-table"></div></details>
-  <div class="col">
-  <h3>What the curves show</h3>
-  <ul>
-    <li><strong>Selection matters only for small panels.</strong> With 1–5 genes, every supervised method beat all 20 random panels in every cancer and task. By 50 genes, random panels are within 0.002 AUC of the best.</li>
-    <li><strong>Picking genes by variance fails.</strong> The single most variable gene does worse than a random one (AUC 0.46–0.68). In lung it is <span class="gene">RPS4Y1</span>, a Y-chromosome gene, with <span class="gene">XIST</span> next. Both track patient sex, not cancer.</li>
-    <li><strong>Fewer genes can do better.</strong> In breast, selected panels of 10–500 genes have about half the error of the all-genes model (1 − AUC ≈ 3×10⁻⁴ vs 6×10⁻⁴). Thousands of irrelevant genes add noise.</li>
-  </ul>
-  </div>
-</section>
-
-<section aria-labelledby="retain">
-  <div class="col">
-  <h2 id="retain">Does the smallest panel retain performance?</h2>
-  <p>A panel counts as retaining performance when the lower 95% bound of its paired, fold-by-fold AUC difference from the all-genes model stays above −0.01. The table gives the smallest panel size that passes, using the best selection method.</p>
-  </div>
-  <div class="tbl" id="retain-table"></div>
-  <div class="col">
-  <p>At the clinically relevant operating point, the share of tumors detected at 95% specificity:</p>
-  </div>
-  <div class="tbl" id="sens-table"></div>
-</section>
-
-<section aria-labelledby="models">
-  <div class="col">
-  <h2 id="models">Model comparison</h2>
-  <p>Best AUC across the five selection methods, per model. With enough genes the choice of model makes no difference. With one gene, tree models lose a little because they can only split a single value into steps.</p>
-  </div>
+  <div class="col"><h3>Does the model matter?</h3><p>Barely. Across tasks, logistic regression, random forest, XGBoost and a small neural network land close together. Simple logistic regression is best with all genes in 15 of the 19 tasks, and where another model wins, it is by at most 0.003 AUC. The other models struggle more with thousands of noisy inputs.</p></div>
   <div class="tbl" id="model-table"></div>
-  <p class="col">XGBoost was also by far the slowest on all genes (about 19 s per fit, versus 1.5–3 s for the others) and gained nothing from the extra cost.</p>
-</section>
-
-<section aria-labelledby="methods">
-  <div class="col">
-  <h2 id="methods">Which selection method picks the best genes?</h2>
-  <p>Logistic regression AUC with 1, 2 and 10 genes. In lung, mutual information, RFE and SHAP find clearly better single genes than t-test ranking or LASSO (AUC 0.989–0.999 vs 0.974–0.984). In breast, every method is within 0.011 of the others, and for Stage I the t-test and LASSO come out slightly ahead. From 10 genes up the methods tie. No method wins everywhere, which is expected when hundreds of genes carry the same signal.</p>
-  </div>
-  <div class="tbl" id="sel-table"></div>
-  <div class="col">
-  <h3>Stability</h3>
-  <p>Different training folds pick different genes. At 10 genes, any two folds' panels share 35–80% of their genes, depending on method. Univariate ranking is the most stable, and RFE and SHAP the least. Accuracy is the same either way, because many genes are interchangeable. Treat any single published "signature" with that in mind.</p>
-  </div>
-  <div class="tbl" id="stab-table"></div>
 </section>
 
 <section aria-labelledby="biology" class="col">
-  <h2 id="biology">Are the selected genes biologically meaningful?</h2>
-  <p>Consensus 10-gene panels are the genes the five methods selected most often across folds. Arrows give the log₂ fold change, tumor minus normal.</p>
-  <h3>Breast (BRCA)</h3>
-  <p><span class="gene">COL10A1 <span class="up">↑6.8</span></span> <span class="gene">MMP11 <span class="up">↑5.8</span></span> <span class="gene">NEK2 <span class="up">↑4.6</span></span> <span class="gene">CA4 <span class="down">↓6.6</span></span> <span class="gene">CD300LG <span class="down">↓6.5</span></span> <span class="gene">FIGF <span class="down">↓6.2</span></span> <span class="gene">MYOC <span class="down">↓5.9</span></span> <span class="gene">CPA1 <span class="down">↓3.9</span></span> <span class="gene">SPRY2 <span class="down">↓2.9</span></span> <span class="gene">LOC572558 <span class="down">↓3.1</span></span></p>
-  <p>The genes that rise are well-known <strong>tumor-stroma remodelling</strong> markers (COL10A1 and MMP11, a collagen and a matrix metalloproteinase) and a <strong>proliferation</strong> kinase (NEK2). The genes that fall mark normal breast fat and blood vessels: FIGF (VEGF-D), CA4 and CD300LG. The Stage I panel adds ADAMTS5, SDPR/CAVIN2, MME and LMOD1, which are also normal stroma genes lost in tumors.</p>
-  <h3>Lung (LUAD)</h3>
-  <p><span class="gene">PYCR1 <span class="up">↑3.7</span></span> <span class="gene">C13orf36 <span class="down">↓6.5</span></span> <span class="gene">SH3GL3 <span class="down">↓5.1</span></span> <span class="gene">C10orf67 <span class="down">↓4.7</span></span> <span class="gene">RTKN2 <span class="down">↓4.6</span></span> <span class="gene">TNNC1 <span class="down">↓4.5</span></span> <span class="gene">ANGPT4 <span class="down">↓4.1</span></span> <span class="gene">CD5L <span class="down">↓4.0</span></span> <span class="gene">STX11 <span class="down">↓3.3</span></span> <span class="gene">EMP2 <span class="down">↓2.9</span></span></p>
-  <p>Only PYCR1, an enzyme of proline metabolism, goes up. The rest belong to normal alveolar and vascular tissue (EMP2, ANGPT4; CAV1 joins in the Stage I panel). The tumor is recognized mainly by the normal lung tissue it has replaced.</p>
-  <h3>Three independent checks</h3>
-  <ul>
-    <li><strong>Literature.</strong> Selected genes have a median of 10 (breast) and 2–2.5 (lung) PubMed abstracts that also mention the cancer type, against 0–1 for random genes (one-sided Mann-Whitney p ≤ 0.013). MMP11 has 102 abstracts, NEK2 74, CA4 55, CAV1 49 and COL10A1 34.</li>
-    <li><strong>Pathways.</strong> The top 100 univariate breast genes are enriched for the G2-M checkpoint and extracellular-matrix organization (Enrichr, FDR ≤ 0.001).</li>
-    <li><strong>Cancer driver genes.</strong> At no panel size are the panels enriched for OncoKB cancer genes (hypergeometric p &gt; 0.05). Drivers are often mutated without large changes in expression. A detection panel and a driver list answer different questions.</li>
-  </ul>
-  <h3>Cross-cancer transfer</h3>
-  <p>The breast panel, retrained on lung data, detects lung cancer with AUC 0.998. A breast model applied to lung samples <em>without retraining</em> still reaches 0.997. Much of the signal is shared: tumors in different organs lose their normal tissue programs in similar ways.</p>
-  <div class="tbl" id="transfer-table"></div>
+  <h2 id="biology">Which genes get picked?</h2>
+  <p>The genes selected most often across training folds and methods (consensus panels). In tissue they mark lost normal tissue and tumor stroma, and for cancer types they are well-known lineage and subtype markers. In the six-cancer blood study they are T-cell genes (<span class="gene">CD27</span> <span class="gene">IL7R</span> <span class="gene">TRBC2</span>), which hints at immune or white-cell differences rather than platelet changes. For lung cancer they include platelet and cytoskeleton genes (<span class="gene">CFL1</span> <span class="gene">ITGB3</span> <span class="gene">TIMP1</span>). After correcting for the hundreds of panels tested, tissue and blood panels are not enriched for known cancer driver genes (OncoKB): detection relies on large, consistent expression changes, and most drivers are not that kind of gene.</p>
+  <div class="genes-list" id="genes-list"></div>
 </section>
 
-<section aria-labelledby="answer" class="col">
-  <h2 id="answer">How much biological information can we remove?</h2>
+<section aria-labelledby="meaning" class="col">
+  <h2 id="meaning">What it means</h2>
   <div class="answer">
-    <p>In tumor tissue, <strong>more than 99.99% of the measured genes</strong>, keeping one or two, with no measurable loss in detection. That holds for Stage I tumors and for all four models.</p>
+    <p><strong>How much biological information can we remove?</strong> In tumor tissue, almost all of it, but only because the task is easy. In blood, the realistic setting for early detection, every gene removed below about 100 costs accuracy, and small panels also break first when the data change.</p>
   </div>
-  <p style="margin-top:1rem">That does not mean cancer is simple. The detection signal is spread across hundreds of genes, so most of the transcriptome is redundant for this task and many different small panels work equally well. What small panels capture best is <strong>the loss of normal tissue architecture</strong> (stroma, fat, vessels, alveoli) rather than a cancer-specific program. That also explains why a breast panel works on lung tissue.</p>
-  <h3>What this does not show, and what would come next</h3>
-  <ul>
-    <li><strong>Tissue is not screening.</strong> Real early detection works on blood or other minimally invasive samples, where tumor RNA is heavily diluted. The next test is these panels on a liquid-biopsy (cfRNA) dataset.</li>
-    <li><strong>Adjacent normal is not healthy.</strong> TCGA normals come from cancer patients. Adding healthy tissue from GTEx would test that.</li>
-    <li><strong>One consortium, one platform.</strong> An independent GEO cohort or a qPCR assay would show whether 1–2-gene panels survive batch effects. They usually degrade faster than larger panels.</li>
-    <li><strong>A harder task would separate the methods.</strong> With AUC ≈ 0.999 everywhere, differences between methods are tiny. Subtype or stage prediction would discriminate between them better.</li>
+  <ul style="margin-top:1rem">
+    <li><strong>Small panels are not free.</strong> They match big models only when the signal is huge and redundant. When the signal is weak, or the data come from a new hospital or pipeline, bigger panels are more accurate and more robust.</li>
+    <li><strong>Check the confounders first.</strong> Age, hospital and study origin explain a large share of several headline AUCs here. Checks like a metadata-only model and a matched cohort should come before any claim about a biomarker.</li>
+    <li><strong>A threshold is part of the test.</strong> AUC can stay high while the cutoff chosen on one dataset misclassifies healthy people in another.</li>
   </ul>
+  <h3>Limitations</h3>
+  <ul>
+    <li>All data are public and retrospective. The blood cohorts are small, especially for early-stage cancer (57 non-metastatic patients).</li>
+    <li>Hospital and age are entangled with cancer status in GSE89843. The matched cohort reduces this but is smaller.</li>
+    <li>TCGA vs GTEx differences are partly technical, so Chapter 3 cannot fully separate "healthy" from "different study".</li>
+    <li>Cross-validation intervals use a corrected test (Nadeau–Bengio), but folds still come from one population per dataset.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="brief" class="col">
+  <h2 id="brief">The original brief, point by point</h2>
+  <div class="brief">
+    <div class="brief-row"><div class="brief-ask">1–2 cancer types, public data</div><div>Breast and lung (TCGA), extended to blood studies of lung and six cancers, GTEx healthy tissue, and 12 cancer types.</div></div>
+    <div class="brief-row"><div class="brief-ask">Start with thousands of genes</div><div><span data-f="ch1_genes"></span>–17,955 in tissue and 4,694–6,950 in blood, after a filter that does not look at labels.</div></div>
+    <div class="brief-row"><div class="brief-ask">LASSO, mutual information, RFE, SHAP</div><div>All four, plus a t-test, stability selection, and random and most-variable baselines.</div></div>
+    <div class="brief-row"><div class="brief-ask">500 → 100 → 50 → 20 → 10 genes</div><div>Extended to 5, 2 and 1.</div></div>
+    <div class="brief-row"><div class="brief-ask">Logistic regression, RF, XGBoost, neural net</div><div>All four, on every task.</div></div>
+    <div class="brief-row"><div class="brief-ask">Does the smallest panel hold up?</div><div>In tissue, yes (1–2 genes). In blood, no: accuracy falls steadily below about 100 genes. On new data, small panels fail first.</div></div>
+    <div class="brief-row"><div class="brief-ask">Known biology?</div><div>Tissue panels match known stroma and tissue-identity genes. Blood panels include platelet and immune genes. Cancer-type panels pick textbook lineage and subtype markers. Only the cancer-type panels are enriched for known cancer genes (OncoKB), because breast subtypes are defined by drivers like ESR1 and ERBB2.</div></div>
+    <div class="brief-row"><div class="brief-ask">How much can we remove?</div><div>See <a href="#meaning">What it means</a>.</div></div>
+  </div>
+</section>
+
+<section aria-labelledby="methods" class="col">
+  <h2 id="methods">Methods</h2>
+  <ul>
+    <li><strong>Validation.</strong> 5-fold cross-validation repeated 5 times (2 for the 12-type task), grouped by patient. Gene selection is redone inside every training fold, so test samples never influence which genes are chosen. A unit test checks this.</li>
+    <li><strong>"Matches all genes".</strong> The lower 95% bound of the paired, fold-by-fold AUC difference stays above −0.01, using the Nadeau–Bengio correction for overlapping training sets.</li>
+    <li><strong>Data processing.</strong> Tissue data are log2 RSEM (TCGA via UCSC Xena) or log2 TPM (Toil). Platelet data are raw counts converted to log2 counts per million. Genes not expressed in at least 20% of samples are dropped (50% for GSE68086).</li>
+    <li><strong>Models.</strong> Logistic regression (regularization tuned by inner CV), random forest (300 trees), XGBoost (300 rounds, depth 3), and a neural network with two hidden layers (64, 32). All are class-balanced.</li>
+    <li><strong>Confounding checks.</strong> Models on metadata alone, a site test on non-cancer samples, one-hospital and matched-cohort reruns, an age-restricted re-scoring, and the authors' own train/validation split.</li>
+    <li><strong>Calibration and decision curves.</strong> Computed from out-of-fold predictions, with each sample predicted once.</li>
+  </ul>
+  <h3>How this was built</h3>
+  <p>Python (scikit-learn, XGBoost, SHAP, pandas): about 2,100 lines of code, 35 automated tests, and continuous integration on GitHub. All results regenerate from public data with one command per chapter. Every number on this page is filled in from the result tables when the page is built.</p>
 </section>
 
 <footer class="col">
-  <p>Methods: label-free gene filter (expressed above log₂(RSEM+1) = 1 in ≥ 20% of samples, SD ≥ 0.1). LASSO, MI, RFE and SHAP rank genes within the top 2,000 univariate genes of each training fold. Logistic regression C is tuned by inner 3-fold CV. RF uses 300 trees, XGBoost 300 rounds at depth 3, and the MLP has 64-32 hidden units with early stopping, all with class balancing. Confidence intervals treat the 25 repeated-CV folds as independent, so they are somewhat too narrow.</p>
-  <p>Data: The Cancer Genome Atlas, via UCSC Xena. Reproduce with <code>genepanel all</code> (about 20 minutes on 8 cores). Source: <a href="https://github.com/lolsripal/genepanel-shrink" target="_blank" rel="noopener">github.com/lolsripal/genepanel-shrink</a>.</p>
+  <p>Data: The Cancer Genome Atlas and GTEx via UCSC Xena and the UCSC Toil recompute; platelet RNA-seq from GEO (GSE89843, GSE68086; Best et al., <a href="https://doi.org/10.1016/j.ccell.2017.07.004" target="_blank" rel="noopener">Cancer Cell 2017</a> and <a href="https://doi.org/10.1016/j.ccell.2015.09.018" target="_blank" rel="noopener">2015</a>). Code and every table: <a href="https://github.com/lolsripal/genepanel-shrink" target="_blank" rel="noopener">github.com/lolsripal/genepanel-shrink</a>.</p>
 </footer>
 </div>
 
 <script>
 const DATA = /*__DATA__*/null;
-const TASK = {tumor_vs_normal: "tumor vs normal", stage1_vs_normal: "Stage I vs normal"};
-const MODELS = [["logreg","Logistic reg."],["rf","Random forest"],["xgb","XGBoost"],["mlp","Neural net"]];
-const SEL = [["univariate","Univariate"],["lasso","LASSO"],["mutual_info","Mutual info"],["rfe","RFE"],["shap","SHAP"],["variance","Top variance"]];
-const f3 = v => v == null || Number.isNaN(v) ? "–" : Number(v).toFixed(3);
-const pct = v => (100 * v).toFixed(1) + "%";
-const label = r => `${r.cancer} ${TASK[r.task]}`;
-
-function table(el, head, rows, caption) {
-  const t = document.createElement("table");
-  t.innerHTML = `<thead><tr>${head.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => typeof c === "object" && c !== null ? `<td class="${c.cls||""}">${c.v}</td>` : `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>` + (caption ? `<caption>${caption}</caption>` : "");
-  document.getElementById(el).appendChild(t);
-}
-function rowMax(r, keys) { const vals = keys.map(k => r[k]).filter(v => v != null); return Math.max(...vals); }
-
-// ---- charts
-const KS = [1,2,5,10,20,50,100,500];
-const W = 440, H = 260, M = {l: 44, r: 54, t: 12, b: 30};
-const xs = k => M.l + (Math.log10(k) / Math.log10(500)) * (W - M.l - M.r - 30);
-const XALL = W - M.r + 14;
-const YMIN = 0.4;
-const ys = v => M.t + (1 - (Math.max(v, YMIN) - YMIN) / (1 - YMIN)) * (H - M.t - M.b);
 const NS = "http://www.w3.org/2000/svg";
+const f2 = v => v == null ? "–" : Number(v).toFixed(2);
+const f3 = v => v == null ? "–" : Number(v).toFixed(3);
+const pct = v => v == null ? "–" : Math.round(100 * v) + "%";
 function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const a in attrs) e.setAttribute(a, attrs[a]); parent && parent.appendChild(e); return e; }
-const path = (pts) => pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join("");
+const path = pts => pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join("");
 const area = (lo, hi) => path(hi) + path(lo.slice().reverse()).replace("M", "L") + "Z";
+function txt(parent, x, y, s, attrs = {}) { const t = el("text", {x, y, ...attrs}, parent); t.textContent = s; return t; }
+function table(id, head, rows, caption) {
+  const t = document.createElement("table");
+  t.innerHTML = `<thead><tr>${head.map(h => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(c => c && typeof c === "object" ? `<td class="${c.cls || ""}">${c.v}</td>` : `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody>` + (caption ? `<caption>${caption}</caption>` : "");
+  document.getElementById(id).appendChild(t);
+}
+function tooltip(box) { const t = document.createElement("div"); t.className = "tip"; t.hidden = true; box.appendChild(t); return t; }
+function place(tip, box, svg, x, y, W) {
+  tip.hidden = false;
+  const bw = box.clientWidth, sx = x / W * svg.clientWidth;
+  tip.style.top = (svg.offsetTop + Math.max(0, y)) + "px";
+  tip.style.left = Math.max(0, Math.min(bw - tip.offsetWidth, sx > bw / 2 ? sx - tip.offsetWidth - 12 : sx + 12)) + "px";
+}
 
-const order = ["BRCA|tumor_vs_normal","BRCA|stage1_vs_normal","LUAD|tumor_vs_normal","LUAD|stage1_vs_normal"];
-const curves = order.map(k => DATA.curves.find(c => c.cancer + "|" + c.task === k)).filter(Boolean);
-const host = document.getElementById("charts");
-curves.forEach(c => {
-  const box = document.createElement("div"); box.className = "chart";
-  box.innerHTML = `<h4>${label(c)}</h4>`;
-  host.appendChild(box);
-  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `AUC versus panel size, ${label(c)}`}, box);
-  for (const v of [0.4,0.5,0.6,0.7,0.8,0.9,1.0]) {
-    el("line", {x1: M.l, x2: W - M.r + 24, y1: ys(v), y2: ys(v), stroke: "var(--rule)", "stroke-width": 1}, svg);
-    const t = el("text", {x: M.l - 6, y: ys(v) + 3, "text-anchor": "end"}, svg); t.textContent = v.toFixed(1);
+// ---- facts
+document.querySelectorAll("[data-f]").forEach(n => { n.textContent = DATA.facts[n.dataset.f] ?? "–"; });
+const pubs = DATA.published;
+document.getElementById("published").textContent =
+  `For reference, the original papers report AUC ${pubs.GSE89843.results[0].auc} (late-stage validation, n = ${pubs.GSE89843.results[0].n}) and ${pubs.GSE89843.results[1].auc} (early-stage, n = ${pubs.GSE89843.results[1].n}) for lung cancer, and ${Math.round(pubs.GSE68086.results[0].accuracy * 100)}% accuracy for pan-cancer vs healthy and ${Math.round(pubs.GSE68086.results[1].accuracy * 100)}% for six-way tumor type, using swarm-optimized support vector machines. Their validation cohorts are defined differently from the GEO split replayed here, so these numbers are reference points, not like-for-like comparisons.`;
+
+// ---- difficulty ladder
+(function ladder() {
+  const rows = DATA.ladder.slice();
+  const order = ["tissue", "external", "harder", "blood"];
+  const groups = {tissue: "Tumor tissue", external: "Healthy controls (TCGA vs GTEx)", harder: "Harder tasks", blood: "Blood test"};
+  rows.sort((a, b) => order.indexOf(a.chapter) - order.indexOf(b.chapter) || b.auc_1 - a.auc_1);
+  const box = document.getElementById("ladder-chart");
+  const LW = 300, W = 900, RH = 22, top = 24;
+  let y = top; const placed = [];
+  let lastG = null;
+  rows.forEach(r => { if (r.chapter !== lastG) { y += lastG ? 18 : 0; placed.push({g: r.chapter, y}); y += 18; lastG = r.chapter; } placed.push({r, y}); y += RH; });
+  const H = y + 30;
+  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "AUC of all-genes, best 10, best single gene and random panels for every task"}, box);
+  const XMIN = 0.5, x = v => LW + (Math.max(v, XMIN) - XMIN) / (1 - XMIN) * (W - LW - 20);
+  for (const v of [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]) {
+    el("line", {x1: x(v), x2: x(v), y1: top - 6, y2: H - 26, stroke: "var(--rule)"}, svg);
+    txt(svg, x(v), H - 10, v.toFixed(1), {"text-anchor": "middle"});
   }
-  KS.forEach(k => { const t = el("text", {x: xs(k), y: H - 10, "text-anchor": "middle"}, svg); t.textContent = k; });
-  const ta = el("text", {x: XALL, y: H - 10, "text-anchor": "middle"}, svg); ta.textContent = "all";
-  const tt = el("text", {x: (M.l + W - M.r) / 2, y: H + 2, "text-anchor": "middle"}, svg); tt.textContent = "genes in panel";
-  const P = c.points;
-  el("path", {d: area(P.map(p => [xs(p.k), ys(p.rand_lo)]), P.map(p => [xs(p.k), ys(p.rand_hi)])), fill: "var(--band)"}, svg);
-  el("path", {d: area(P.map(p => [xs(p.k), ys(p.worst)]), P.map(p => [xs(p.k), ys(p.best)])), fill: "var(--selband)"}, svg);
-  el("line", {x1: M.l, x2: XALL, y1: ys(c.all), y2: ys(c.all), stroke: "var(--ink)", "stroke-width": 1, "stroke-dasharray": "4 3"}, svg);
-  el("circle", {cx: XALL, cy: ys(c.all), r: 4, fill: "var(--ink)", stroke: "var(--bg)", "stroke-width": 2}, svg);
-  for (const [key, col] of [["rand","var(--rand)"],["variance","var(--var)"],["best","var(--sel)"]]) {
-    el("path", {d: path(P.map(p => [xs(p.k), ys(p[key])])), fill: "none", stroke: col, "stroke-width": 2, "stroke-linejoin": "round"}, svg);
-    P.forEach(p => el("circle", {cx: xs(p.k), cy: ys(p[key]), r: 3.2, fill: col, stroke: "var(--bg)", "stroke-width": 1.5}, svg));
-  }
-  // direct labels at k=1
-  const p1 = P[0];
-  [["selected", p1.best, "var(--sel)"], ["random", p1.rand, "var(--rand)"]].forEach(([s, v, col]) => {
-    const t = el("text", {x: xs(1) + 7, y: ys(v) + (s === "selected" ? 14 : -7), fill: col}, svg); t.style.fill = col; t.textContent = s;
+  txt(svg, x(0.75), H + 4, "ROC-AUC", {"text-anchor": "middle"});
+  const tip = tooltip(box);
+  placed.forEach(p => {
+    if (p.g) { txt(svg, 0, p.y + 10, groups[p.g], {class: "grouplabel"}); return; }
+    const r = p.r, cy = p.y + RH / 2;
+    txt(svg, 0, cy + 4, r.label.length > 46 ? r.label.slice(0, 45) + "…" : r.label, {class: "rowlabel"});
+    const vals = [r.rand_10, r.auc_1, r.auc_10, r.auc_all].filter(v => v != null);
+    el("line", {x1: x(Math.min(...vals)), x2: x(Math.max(...vals)), y1: cy, y2: cy, stroke: "var(--rule)", "stroke-width": 2}, svg);
+    [["rand_10", "var(--rand)"], ["auc_1", "var(--c2)"], ["auc_10", "var(--c1)"], ["auc_all", "var(--ink)"]].forEach(([k, c]) => {
+      if (r[k] != null) el("circle", {cx: x(r[k]), cy, r: 5, fill: c, stroke: "var(--bg)", "stroke-width": 1.5}, svg);
+    });
+    const hit = el("rect", {x: 0, y: p.y, width: W, height: RH, fill: "transparent"}, svg);
+    const show = () => {
+      tip.innerHTML = `<b>${r.label}</b><div class="row"><span>All genes</span><span>${f3(r.auc_all)}</span></div><div class="row"><span>Best 10 genes</span><span>${f3(r.auc_10)}</span></div><div class="row"><span>Best single gene</span><span>${f3(r.auc_1)}</span></div><div class="row"><span>10 random genes</span><span>${f3(r.rand_10)}</span></div><div class="row"><span>Smallest panel matching all genes</span><span>${r.min_k ?? "none ≤ 500"}</span></div>`;
+      place(tip, box, svg, x(r.auc_all), (p.y + RH) * svg.clientWidth / W, W);
+    };
+    hit.addEventListener("mouseenter", show); hit.addEventListener("click", show);
   });
-  // hover
-  const cross = el("line", {y1: M.t, y2: H - M.b, stroke: "var(--ink-2)", "stroke-width": 1, opacity: 0}, svg);
-  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; box.appendChild(tip);
-  const cols = P.map(p => ({x: xs(p.k), p})).concat([{x: XALL, all: true}]);
+  svg.addEventListener("mouseleave", () => { tip.hidden = true; });
+  table("ladder-table", ["Task", "All genes", "Best 10", "Best 1", "10 random", "Smallest matching panel"],
+    rows.map(r => [r.label, f3(r.auc_all), f3(r.auc_10), f3(r.auc_1), f3(r.rand_10), r.min_k ?? "none ≤ 500"]),
+    "ROC-AUC, logistic regression, mean over test folds. Multiclass tasks use macro one-vs-rest AUC.");
+})();
+
+// ---- curve chart (explorer)
+const KS = [1, 2, 5, 10, 20, 50, 100, 500];
+function curveChart(box, c) {
+  box.innerHTML = "";
+  const W = 560, H = 300, M = {l: 46, r: 60, t: 14, b: 34};
+  const pts = c.points;
+  const lo = Math.min(c.all, ...pts.map(p => Math.min(p.worst, p.rand_lo ?? 1, p.variance ?? 1)));
+  const YMIN = Math.max(0.3, Math.floor((lo - 0.02) * 10) / 10);
+  const xs = k => M.l + Math.log10(k) / Math.log10(500) * (W - M.l - M.r - 30);
+  const XALL = W - M.r + 18;
+  const ys = v => M.t + (1 - (Math.max(v, YMIN) - YMIN) / (1 - YMIN)) * (H - M.t - M.b);
+  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `AUC versus panel size: ${c.label}`}, box);
+  for (let v = YMIN; v <= 1.0001; v += (1 - YMIN) > 0.31 ? 0.1 : 0.05) {
+    el("line", {x1: M.l, x2: XALL + 8, y1: ys(v), y2: ys(v), stroke: "var(--rule)"}, svg);
+    txt(svg, M.l - 6, ys(v) + 3, v.toFixed(2), {"text-anchor": "end"});
+  }
+  KS.forEach(k => txt(svg, xs(k), H - 14, k, {"text-anchor": "middle"}));
+  txt(svg, XALL, H - 14, "all", {"text-anchor": "middle"});
+  txt(svg, (M.l + W - M.r) / 2, H, "genes in panel", {"text-anchor": "middle"});
+  const rp = pts.filter(p => p.rand_lo != null);
+  if (rp.length) el("path", {d: area(rp.map(p => [xs(p.k), ys(p.rand_lo)]), rp.map(p => [xs(p.k), ys(p.rand_hi)])), fill: "var(--band)"}, svg);
+  el("path", {d: area(pts.map(p => [xs(p.k), ys(p.worst)]), pts.map(p => [xs(p.k), ys(p.best)])), fill: "var(--selband)"}, svg);
+  el("line", {x1: M.l, x2: XALL, y1: ys(c.all), y2: ys(c.all), stroke: "var(--ink)", "stroke-dasharray": "4 3"}, svg);
+  el("circle", {cx: XALL, cy: ys(c.all), r: 4, fill: "var(--ink)", stroke: "var(--bg)", "stroke-width": 2}, svg);
+  [["rand", "var(--rand)"], ["variance", "var(--c2)"], ["best", "var(--c1)"]].forEach(([key, col]) => {
+    const q = pts.filter(p => p[key] != null);
+    if (!q.length) return;
+    el("path", {d: path(q.map(p => [xs(p.k), ys(p[key])])), fill: "none", stroke: col, "stroke-width": 2, "stroke-linejoin": "round"}, svg);
+    q.forEach(p => el("circle", {cx: xs(p.k), cy: ys(p[key]), r: 3.2, fill: col, stroke: "var(--bg)", "stroke-width": 1.5}, svg));
+  });
+  const cross = el("line", {y1: M.t, y2: H - M.b, stroke: "var(--ink-2)", opacity: 0}, svg);
+  const tip = tooltip(box);
+  const cols = pts.map(p => ({x: xs(p.k), p})).concat([{x: XALL, all: true}]);
   cols.forEach((col, i) => {
-    const prev = i ? cols[i - 1].x : M.l, next = i < cols.length - 1 ? cols[i + 1].x : W;
-    const x0 = i ? (prev + col.x) / 2 : M.l - 10, x1 = i < cols.length - 1 ? (col.x + next) / 2 : W;
+    const x0 = i ? (cols[i - 1].x + col.x) / 2 : M.l - 10, x1 = i < cols.length - 1 ? (col.x + cols[i + 1].x) / 2 : W;
     const hit = el("rect", {x: x0, y: 0, width: x1 - x0, height: H - M.b + 6, fill: "transparent"}, svg);
     const show = () => {
       cross.setAttribute("x1", col.x); cross.setAttribute("x2", col.x); cross.setAttribute("opacity", .5);
-      tip.innerHTML = col.all
-        ? `<b>All ${c.n_genes.toLocaleString()} genes</b><div class="row"><span>AUC</span><span>${c.all.toFixed(4)}</span></div>`
-        : `<b>${col.p.k} gene${col.p.k > 1 ? "s" : ""}</b>
-           <div class="row"><span>Selected, best (${col.p.best_sel.replace("_"," ")})</span><span>${col.p.best.toFixed(4)}</span></div>
-           <div class="row"><span>Selected, worst method</span><span>${col.p.worst.toFixed(4)}</span></div>
-           <div class="row"><span>Random, mean</span><span>${col.p.rand.toFixed(4)}</span></div>
-           <div class="row"><span>Random, 5–95%</span><span>${col.p.rand_lo.toFixed(3)}–${col.p.rand_hi.toFixed(3)}</span></div>
-           <div class="row"><span>Most variable</span><span>${col.p.variance.toFixed(4)}</span></div>
-           <div class="row"><span>All genes</span><span>${c.all.toFixed(4)}</span></div>`;
-      tip.hidden = false;
-      const bw = box.clientWidth, sx = col.x / W * svg.clientWidth;
-      tip.style.top = (svg.offsetTop + 8) + "px";
-      tip.style.left = Math.max(0, Math.min(bw - tip.offsetWidth, sx > bw / 2 ? sx - tip.offsetWidth - 12 : sx + 12)) + "px";
+      tip.innerHTML = col.all ? `<b>All ${c.n_genes.toLocaleString()} genes</b><div class="row"><span>AUC</span><span>${f3(c.all)}</span></div>`
+        : `<b>${col.p.k} gene${col.p.k > 1 ? "s" : ""}</b><div class="row"><span>Best (${col.p.best_sel.replace("_", " ")})</span><span>${f3(col.p.best)}</span></div><div class="row"><span>Worst method</span><span>${f3(col.p.worst)}</span></div><div class="row"><span>Random, mean</span><span>${f3(col.p.rand)}</span></div><div class="row"><span>Most variable</span><span>${f3(col.p.variance)}</span></div><div class="row"><span>All genes</span><span>${f3(c.all)}</span></div>`;
+      place(tip, box, svg, col.x, 8, W);
     };
     hit.addEventListener("mouseenter", show); hit.addEventListener("click", show);
   });
   svg.addEventListener("mouseleave", () => { tip.hidden = true; cross.setAttribute("opacity", 0); });
-});
-table("curve-table", ["Task","Genes","Selected (best)","Selected (worst)","Random mean","Random 5–95%","Most variable","All genes"],
-  curves.flatMap(c => c.points.map(p => [label(c), p.k, f3(p.best), f3(p.worst), f3(p.rand), `${f3(p.rand_lo)}–${f3(p.rand_hi)}`, f3(p.variance), f3(c.all)])));
+}
+(function explorer() {
+  const sel = document.getElementById("task-select"), box = document.getElementById("explorer-chart");
+  const titles = {tissue: "1 · Tissue", blood: "2 · Blood", external: "3 · Healthy controls", harder: "4 · Harder tasks"};
+  Object.keys(titles).forEach(ch => {
+    const og = document.createElement("optgroup"); og.label = titles[ch];
+    DATA.curves.forEach((c, i) => { if (c.chapter === ch) { const o = document.createElement("option"); o.value = i; o.textContent = c.label; og.appendChild(o); } });
+    if (og.children.length) sel.appendChild(og);
+  });
+  const start = DATA.curves.findIndex(c => c.cancer === "GSE89843" && c.task === "nsclc_vs_noncancer");
+  let saved = null; try { saved = localStorage.getItem("gp-task"); } catch (e) {}
+  sel.value = saved != null && DATA.curves[saved] ? saved : String(Math.max(0, start));
+  const draw = () => { curveChart(box, DATA.curves[+sel.value]); try { localStorage.setItem("gp-task", sel.value); } catch (e) {} };
+  sel.addEventListener("change", draw); draw();
+})();
 
-// ---- retention
-const rv = Object.fromEntries(DATA.retention_var.map(r => [r.cancer + r.task, r]));
-table("retain-table", ["Task", ...MODELS.map(m => m[1]), "Variance genes (range)"],
-  DATA.retention.map(r => {
-    const v = rv[r.cancer + r.task], vv = MODELS.map(m => v[m[0]]);
-    return [label(r), ...MODELS.map(m => ({v: r[m[0]], cls: "hi"})), {v: `${Math.min(...vv)}–${Math.max(...vv)}`, cls: "lo"}];
-  }), "Smallest panel size (genes) that is non-inferior to all ~17,700 genes. The last column uses the most variable genes instead of a supervised method.");
-table("sens-table", ["Task","1 gene","2 genes","5 genes"],
-  DATA.sens.map(r => [label(r), pct(r["1"]), pct(r["2"]), pct(r["5"])]),
-  "Sensitivity at 95% specificity, logistic regression, best selection method.");
+// ---- confounders + benchmark tables
+table("conf-table", ["Dataset", "Task", "Model sees only", "AUC", "95% CI"],
+  DATA.confounders.map(r => [r.cancer, r.task.replaceAll("_", " "), r.features, {v: f2(r.auc_mean), cls: r.auc_mean > 0.8 ? "lo" : ""}, `${f2(r.auc_lo)}–${f2(r.auc_hi)}`]),
+  "Patient-grouped 5×5 CV, logistic regression on metadata only (no genes). Highlighted: above 0.8.");
+const benchRows = DATA.benchmark.filter(r => r.selector === "all_genes" || [1, 10, 100].includes(r.k));
+table("bench-table", ["Cohort", "Validation subset", "Genes", "AUC", "95% CI", "Cancers"],
+  benchRows.map(r => [r.cohort.replace("_", " "), r.subset, r.selector === "all_genes" ? "all" : `${r.k} (LASSO)`, f2(r.auc), `${f2(r.auc_lo)}–${f2(r.auc_hi)}`, r.n_cancer]),
+  "Trained once on the authors' training and evaluation samples, scored once on their validation samples. Bootstrap CIs.");
 
-// ---- models
-const byKey = (arr) => Object.fromEntries(arr.map(r => [r.cancer + r.task, r]));
-const k1 = byKey(DATA.models.k1), k10 = byKey(DATA.models.k10), all = byKey(DATA.models.all);
-table("model-table", ["Task", ...MODELS.map(m => m[1] + " · 1 gene"), ...MODELS.map(m => m[1] + " · 10"), "All genes (range)"],
-  DATA.models.k1.map(r => {
-    const key = r.cancer + r.task, m1 = rowMax(k1[key], MODELS.map(m => m[0]));
-    const a = MODELS.map(m => all[key][m[0]]);
-    return [label(r), ...MODELS.map(m => ({v: f3(k1[key][m[0]]), cls: k1[key][m[0]] === m1 ? "hi" : ""})),
-            ...MODELS.map(m => f3(k10[key][m[0]])), `${f3(Math.min(...a))}–${f3(Math.max(...a))}`];
-  }), "ROC-AUC. Bold marks the best model with a single gene.");
+// ---- decision curve
+(function dca() {
+  const box = document.getElementById("dca-chart");
+  const rows = DATA.dca; if (!rows.length) return;
+  const W = 720, H = 260, M = {l: 52, r: 16, t: 12, b: 34};
+  const series = {};
+  rows.forEach(r => { const key = r.selector === "all_genes" ? "all" : r.k === 10 ? "k10" : r.k === 1 ? "k1" : null; if (key) (series[key] ??= []).push(r); });
+  const all = series.all || [];
+  const tmax = 0.8, ymax = Math.max(...rows.map(r => r.model), ...all.map(r => r.treat_all));
+  const xs = t => M.l + (t / tmax) * (W - M.l - M.r);
+  const ymin = -0.1, ys = v => M.t + (1 - (Math.max(v, ymin) - ymin) / (ymax - ymin)) * (H - M.t - M.b);
+  const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Decision curve: net benefit versus risk threshold"}, box);
+  for (let v = 0; v <= ymax + 1e-9; v += 0.1) { el("line", {x1: M.l, x2: W - M.r, y1: ys(v), y2: ys(v), stroke: "var(--rule)"}, svg); txt(svg, M.l - 6, ys(v) + 3, v.toFixed(1), {"text-anchor": "end"}); }
+  for (let t = 0; t <= tmax + 1e-9; t += 0.1) txt(svg, xs(t), H - 16, t.toFixed(1), {"text-anchor": "middle"});
+  txt(svg, (M.l + W) / 2, H, "risk threshold for sending someone to a scan", {"text-anchor": "middle"});
+  const draw = (pts, key, col, dash) => { const q = pts.filter(r => r.threshold <= tmax); el("path", {d: path(q.map(r => [xs(r.threshold), ys(r[key])])), fill: "none", stroke: col, "stroke-width": 2, ...(dash ? {"stroke-dasharray": dash} : {})}, svg); };
+  draw(all, "treat_all", "var(--rand)", "5 4");
+  if (series.k1) draw(series.k1, "model", "var(--c2)");
+  if (series.k10) draw(series.k10, "model", "var(--c1)");
+  draw(all, "model", "var(--ink)");
+  el("line", {x1: M.l, x2: W - M.r, y1: ys(0), y2: ys(0), stroke: "var(--ink-2)", "stroke-width": 1}, svg);
+})();
 
-// ---- selectors
-table("sel-table", ["Task","Genes", ...SEL.map(s => s[1])],
-  DATA.selectors.map(r => {
-    const m = rowMax(r, SEL.slice(0, 5).map(s => s[0]));
-    return [label(r), r.k, ...SEL.map(([k], i) => ({v: f3(r[k]), cls: i === 5 ? "lo" : (r[k] === m ? "hi" : "")}))];
-  }), "Logistic regression ROC-AUC. Bold marks the best supervised method in each row.");
-table("stab-table", ["Task", ...SEL.map(s => s[1])],
-  DATA.stability.map(r => [label(r), ...SEL.map(([k]) => r[k].toFixed(2))]),
-  "Mean pairwise Jaccard overlap of 10-gene panels across the 25 training folds (1 = identical panels). Top-variance is stable because it ignores the labels.");
-table("transfer-table", ["Panel from","Applied to","How","AUC","Sensitivity @ 95% spec."],
-  DATA.transfer.filter(r => r.task === "tumor_vs_normal" && r.panel_from !== r.evaluated_on)
-    .map(r => [r.panel_from, r.evaluated_on, r.mode === "direct" ? "trained on source, applied as is" : "genes reused, retrained (CV)", f3(r.auc), pct(r.sens_at_95spec)]),
-  "Tumor vs normal; consensus 10-gene panels (9 of 10 genes present in both datasets).");
+// ---- external validation charts
+(function ext() {
+  const host = document.getElementById("ext-charts");
+  ["lung", "breast"].forEach(tissue => {
+    const rows = DATA.external.filter(r => r.tissue === tissue && r.selector === "lasso");
+    const allg = DATA.external.filter(r => r.tissue === tissue && r.selector === "all_genes");
+    const box = document.createElement("div"); box.className = "figure";
+    box.innerHTML = `<h4>${tissue === "lung" ? "Lung" : "Breast"}: share of normal/healthy samples correctly rejected</h4>`;
+    host.appendChild(box);
+    const W = 440, H = 240, M = {l: 44, r: 50, t: 10, b: 32};
+    const xs = k => M.l + Math.log10(k) / Math.log10(500) * (W - M.l - M.r - 30), XALL = W - M.r + 14;
+    const ys = v => M.t + (1 - v) * (H - M.t - M.b);
+    const svg = el("svg", {viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": `Specificity by panel size, ${tissue}`}, box);
+    for (const v of [0, 0.25, 0.5, 0.75, 1]) { el("line", {x1: M.l, x2: XALL + 8, y1: ys(v), y2: ys(v), stroke: "var(--rule)"}, svg); txt(svg, M.l - 6, ys(v) + 3, Math.round(v * 100) + "%", {"text-anchor": "end"}); }
+    KS.forEach(k => txt(svg, xs(k), H - 12, k, {"text-anchor": "middle"}));
+    txt(svg, XALL, H - 12, "all", {"text-anchor": "middle"});
+    const tip = tooltip(box);
+    [["internal", "var(--c1)"], ["external_harmonized", "var(--c3)"]].forEach(([setting, col]) => {
+      const q = rows.filter(r => r.setting === setting).sort((a, b) => a.k - b.k);
+      const a = allg.find(r => r.setting === setting);
+      const P = q.map(r => [xs(r.k), ys(r.spec)]).concat(a ? [[XALL, ys(a.spec)]] : []);
+      el("path", {d: path(P), fill: "none", stroke: col, "stroke-width": 2}, svg);
+      q.concat(a ? [{...a, all: true}] : []).forEach(r => {
+        const cx = r.all ? XALL : xs(r.k), cy = ys(r.spec);
+        el("circle", {cx, cy, r: 3.5, fill: col, stroke: "var(--bg)", "stroke-width": 1.5}, svg);
+        const hit = el("circle", {cx, cy, r: 10, fill: "transparent"}, svg);
+        const show = () => { tip.innerHTML = `<b>${r.all ? "All genes" : r.k + " genes"}, ${setting === "internal" ? "original data" : "new pipeline + healthy"}</b><div class="row"><span>Normal correctly rejected</span><span>${pct(r.spec)}</span></div><div class="row"><span>Tumors detected</span><span>${pct(r.sens)}</span></div><div class="row"><span>AUC</span><span>${f3(r.auc)}</span></div>`; place(tip, box, svg, cx, 8, W); };
+        hit.addEventListener("mouseenter", show); hit.addEventListener("click", show);
+      });
+    });
+    svg.addEventListener("mouseleave", () => { tip.hidden = true; });
+  });
+})();
+
+// ---- models + genes
+table("model-table", ["Task", "LogReg (all)", "RF (all)", "XGB (all)", "MLP (all)", "LogReg (10)", "RF (10)", "XGB (10)", "MLP (10)"],
+  DATA.models.map(r => {
+    const a = ["logreg", "rf", "xgb", "mlp"].map(m => r[m + "_all"]), b = ["logreg", "rf", "xgb", "mlp"].map(m => r[m + "_10"]);
+    const ma = Math.max(...a.filter(v => v != null)), mb = Math.max(...b.filter(v => v != null));
+    return [r.label, ...a.map(v => ({v: f3(v), cls: v === ma ? "hi" : ""})), ...b.map(v => ({v: f3(v), cls: v === mb ? "hi" : ""}))];
+  }), "ROC-AUC with all genes and with the best 10-gene panel. Bold marks the best model in each group.");
+const gl = document.getElementById("genes-list");
+DATA.consensus.forEach(c => { const d = document.createElement("div"); d.innerHTML = `<b>${c.label}</b>${c.genes.map(g => `<span class="gene">${g}</span>`).join("")}`; gl.appendChild(d); });
 </script>

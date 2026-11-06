@@ -8,7 +8,7 @@ from genepanel.evaluate import metrics, rank_all, run_fold, splits
 
 CFG = {
     "selection": {"prefilter_k": 60, "selectors": list(selectors.SELECTORS),
-                  "panel_sizes": [20, 5, 1], "rfe_drop_frac": 0.2},
+                  "panel_sizes": [20, 5, 1], "rfe_drop_frac": 0.2, "stability_subsamples": 10},
     "models": ["logreg"],
     "random_baseline": {"n_draws": 2, "models": ["logreg"]},
 }
@@ -33,7 +33,7 @@ def test_rankings_are_permutations(synth, name):
     assert sorted(r) == list(range(X.shape[1]))
 
 
-@pytest.mark.parametrize("name", ["univariate", "lasso", "mutual_info", "rfe", "shap"])
+@pytest.mark.parametrize("name", ["univariate", "lasso", "mutual_info", "rfe", "shap", "stability"])
 def test_supervised_selectors_recover_planted_genes(synth, name):
     X, y, _ = synth
     top = set(selectors.SELECTORS[name](X, y, seed=0)[:10])
@@ -67,7 +67,7 @@ def test_selectors_never_see_test_rows(synth):
     tag_rows = []
     spies["variance"] = lambda Xs, ys=None, seed=0: (tag_rows.append(Xs[:, -1].copy()),
                                                      selectors.variance(Xs))[1]
-    rows, panels, _ = run_fold(X, y, np.array([f"g{i}" for i in range(X.shape[1])]),
+    rows, panels, _, _ = run_fold(X, y, np.array([f"g{i}" for i in range(X.shape[1])]),
                                tr, te, CFG, 0, {}, selectors=spies)
     assert seen and all(n == len(tr) for n in seen)
     assert set(tag_rows[0].astype(int)) == set(tr)
@@ -83,7 +83,7 @@ def test_grouped_splits_keep_patients_together(synth):
 def test_run_fold_rows(synth):
     X, y, groups = synth
     _, _, tr, te = next(splits(y, groups, 3, 1, 0))
-    rows, panels, _ = run_fold(X, y, np.array([f"g{i}" for i in range(X.shape[1])]),
+    rows, panels, _, _ = run_fold(X, y, np.array([f"g{i}" for i in range(X.shape[1])]),
                                tr, te, CFG, 0, {"fold": 0})
     df = pd.DataFrame(rows)
     n_sel = len(CFG["selection"]["selectors"]) * len(CFG["selection"]["panel_sizes"])

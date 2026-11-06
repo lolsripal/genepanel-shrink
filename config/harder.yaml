@@ -1,0 +1,29 @@
+# Chapter 4 (harder tasks): problems where small panels should break.
+seed: 42
+data_dir: data
+results_dir: results/harder
+pipeline: [download, run, analyze, biology, report]
+
+datasets:
+  # binary: LUSC is the positive class
+  - {source: tcga, kind: histology, cancers: [LUAD, LUSC], name: LUAD_LUSC, task: adeno_vs_squamous, pubmed_term: lung cancer}
+  - {source: tcga, kind: pam50, task: pam50_subtype, pubmed_term: breast cancer}
+  # 12 cancer types x 300 tumors; heavier, so fewer repeats and no all-genes XGBoost
+  - {source: toil, kind: tissue_of_origin, name: TCGA12, task: tissue_of_origin, pubmed_term: cancer,
+     overrides: {cv: {n_repeats: 2}, all_genes_models: [logreg, rf, mlp], selection: {stability_subsamples: 20}}}
+
+preprocess: {min_expr: 1.0, min_frac_expressed: 0.2, min_std: 0.1}
+cv: {n_splits: 5, n_repeats: 5, n_jobs: 8}
+
+selection:
+  prefilter_k: 2000
+  selectors: [univariate, variance, lasso, mutual_info, rfe, shap, stability]
+  stability_subsamples: 50
+  panel_sizes: [500, 100, 50, 20, 10, 5, 2, 1]
+  rfe_drop_frac: 0.1
+
+models: [logreg, rf, xgb, mlp]
+random_baseline: {n_draws: 20, models: [logreg]}
+prediction_models: [logreg]
+
+analysis: {delta_auc: 0.01, consensus_freq: 0.8, sens_target: 0.9}

@@ -1,0 +1,9 @@
+cancer,task,median_selected,median_random,frac_selected_with_any,frac_random_with_any,mannwhitney_p
+GSE68086,cancer_type,13.0,17.5,1.0,0.9,0.42911013592717295
+GSE68086,pancancer_vs_healthy,44.0,10.5,1.0,0.92,0.059525647917295414
+GSE68086_batch234,pancancer_vs_healthy,23.0,6.0,1.0,0.88,0.02751929974485077
+GSE89843,nonmetastatic_vs_noncancer,1.5,1.0,0.7,0.58,0.2929964784920098
+GSE89843,nsclc_vs_healthy,1.5,1.0,0.5,0.62,0.6997675071425387
+GSE89843,nsclc_vs_noncancer,0.0,1.0,0.4,0.54,0.542004686121814
+GSE89843_VUMC,nsclc_vs_noncancer,6.0,2.0,1.0,0.74,0.013503867308427816
+GSE89843_matched,nsclc_vs_noncancer,5.5,1.0,0.8,0.68,0.031540006000894

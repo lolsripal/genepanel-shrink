@@ -18,6 +18,7 @@ SELECTOR_STYLE = {  # fixed order -> fixed hue, never re-assigned when filtered
     "rfe": ("#eda100", "D"),
     "shap": ("#e87ba4", "v"),
     "variance": ("#008300", "P"),
+    "stability": ("#4a3aa7", "X"),
 }
 SURFACE, INK, MUTED, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e4e3dd"
 MODEL_LABEL = {"logreg": "Logistic regression", "rf": "Random forest", "xgb": "XGBoost",
@@ -31,6 +32,21 @@ plt.rcParams.update({
     "grid.linewidth": 0.8, "axes.spines.top": False, "axes.spines.right": False,
     "font.size": 10, "axes.titlesize": 11, "legend.frameon": False,
 })
+
+
+def _grid(n, w, h, **kw):
+    """Up to 4 panels per row; returns (fig, flat axes) with unused axes hidden."""
+    ncol = min(4, n)
+    nrow = -(-n // ncol)
+    fig, axes = plt.subplots(nrow, ncol, figsize=(w * ncol, h * nrow), squeeze=False, **kw)
+    flat = axes.ravel()
+    for ax in flat[n:]:
+        ax.set_visible(False)
+    return fig, flat
+
+
+def _label(c, t):
+    return f"{c}: {TASK_LABEL.get(t, t.replace('_', ' '))}"
 
 
 def _ks(df):
@@ -67,11 +83,11 @@ def auc_vs_k(summary: pd.DataFrame, vsr: pd.DataFrame, cancer: str, task: str, o
         ax.minorticks_off()
         ax.set_title(MODEL_LABEL[model])
         ax.set_xlabel("genes in panel")
-    axes[0].set_ylabel("ROC-AUC (mean over 25 folds)")
+    axes[0].set_ylabel("ROC-AUC (mean over CV folds)")
     axes[0].set_ylim(max(0.5, lo - 0.01), 1.002)
     h, l = axes[0].get_legend_handles_labels()
     fig.legend(h, l, loc="lower center", ncol=len(l), bbox_to_anchor=(0.5, -0.06))
-    fig.suptitle(f"{cancer}: {TASK_LABEL.get(task, task)}. AUC as the gene panel shrinks",
+    fig.suptitle(f"{_label(cancer, task)}. AUC as the gene panel shrinks",
                  x=0.01, ha="left")
     fig.tight_layout()
     fig.savefig(out, dpi=150, bbox_inches="tight")
@@ -81,9 +97,7 @@ def auc_vs_k(summary: pd.DataFrame, vsr: pd.DataFrame, cancer: str, task: str, o
 def heatmap_k(summary: pd.DataFrame, k: int, out: Path, metric="auc_mean"):
     s = summary[(summary.k == k) & summary.selector.isin(SELECTOR_STYLE)]
     combos = s[["cancer", "task"]].drop_duplicates().values.tolist()
-    fig, axes = plt.subplots(1, len(combos), figsize=(3.2 * len(combos), 3.4), sharey=True,
-                             gridspec_kw={"wspace": 0.08})
-    axes = np.atleast_1d(axes)
+    fig, axes = _grid(len(combos), 3.2, 3.4, sharey=True, gridspec_kw={"wspace": 0.08})
     vmin = s[metric].min()
     for ax, (c, t) in zip(axes, combos):
         p = (s[(s.cancer == c) & (s.task == t)].pivot(index="selector", columns="model", values=metric)
@@ -99,7 +113,7 @@ def heatmap_k(summary: pd.DataFrame, k: int, out: Path, metric="auc_mean"):
         ax.set_yticks(range(p.shape[0]), p.index)
         ax.tick_params(axis="y", length=0)
         ax.grid(False)
-        ax.set_title(f"{c}: {TASK_LABEL.get(t, t)}", fontsize=10)
+        ax.set_title(_label(c, t), fontsize=10)
     fig.suptitle(f"ROC-AUC with a {k}-gene panel (selector × model)", x=0.01, y=1.04, ha="left")
     fig.colorbar(im, ax=axes, shrink=0.8, label="ROC-AUC")
     fig.savefig(out, dpi=150, bbox_inches="tight")
@@ -110,8 +124,7 @@ def error_vs_k(summary: pd.DataFrame, vsr: pd.DataFrame, out: Path, model="logre
     """1 - AUC on a log axis: near the ceiling, this is where the differences live."""
     s = summary[summary.model == model]
     combos = s[["cancer", "task"]].drop_duplicates().values.tolist()
-    fig, axes = plt.subplots(1, len(combos), figsize=(3.4 * len(combos), 3.4), sharey=True)
-    axes = np.atleast_1d(axes)
+    fig, axes = _grid(len(combos), 3.4, 3.4, sharey=True)
     floor = 1e-4
     for ax, (c, t) in zip(axes, combos):
         d0 = s[(s.cancer == c) & (s.task == t)]
@@ -136,7 +149,7 @@ def error_vs_k(summary: pd.DataFrame, vsr: pd.DataFrame, out: Path, model="logre
         ax.set_yscale("log")
         ax.set_xticks(ks, [str(k) for k in ks])
         ax.minorticks_off()
-        ax.set_title(f"{c}: {TASK_LABEL.get(t, t)}", fontsize=10)
+        ax.set_title(_label(c, t), fontsize=10)
         ax.set_xlabel("genes in panel")
     axes[0].set_ylabel(f"1 − ROC-AUC (log; floor {floor:g})")
     h, l = axes[0].get_legend_handles_labels()
@@ -150,8 +163,7 @@ def error_vs_k(summary: pd.DataFrame, vsr: pd.DataFrame, out: Path, model="logre
 
 def stability_plot(stab: pd.DataFrame, out: Path):
     combos = stab[["cancer", "task"]].drop_duplicates().values.tolist()
-    fig, axes = plt.subplots(1, len(combos), figsize=(3.4 * len(combos), 3.2), sharey=True)
-    axes = np.atleast_1d(axes)
+    fig, axes = _grid(len(combos), 3.4, 3.2, sharey=True)
     for ax, (c, t) in zip(axes, combos):
         for sel, (col, mk) in SELECTOR_STYLE.items():
             d = stab[(stab.cancer == c) & (stab.task == t) & (stab.selector == sel)].sort_values("k")
@@ -160,7 +172,7 @@ def stability_plot(stab: pd.DataFrame, out: Path):
         ax.set_xscale("log")
         ax.set_xticks(_ks(stab), [str(k) for k in _ks(stab)])
         ax.minorticks_off()
-        ax.set_title(f"{c}: {TASK_LABEL.get(t, t)}", fontsize=10)
+        ax.set_title(_label(c, t), fontsize=10)
         ax.set_xlabel("genes in panel")
     axes[0].set_ylabel("mean pairwise Jaccard\nacross CV folds")
     axes[0].set_ylim(0, 1.02)

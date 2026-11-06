@@ -1,281 +1,1006 @@
 key,count
-PYCR1|LUAD,15
-STX11|LUAD,2
-ANGPT4|LUAD,3
-C13orf36|LUAD,0
-EMP2|LUAD,1
-CD5L|LUAD,2
-OVCH1|LUAD,0
-RTKN2|LUAD,4
-AGER|LUAD,20
-C10orf67|LUAD,0
-BCL6B|LUAD,0
-ALG12|LUAD,0
-SYCP2|LUAD,0
-SYT9|LUAD,0
-RGS16|LUAD,0
-TBX18|LUAD,1
-C11orf16|LUAD,1
-LRP12|LUAD,1
-BMS1P4|LUAD,0
-DYRK2|LUAD,4
-LOC652276|LUAD,0
-SMO|LUAD,6
-MGC16121|LUAD,0
-EIF2A|LUAD,0
-SCO2|LUAD,2
-HIC2|LUAD,0
-AP2S1|LUAD,1
-AGR3|LUAD,0
-PGS1|LUAD,1
-POLR1A|LUAD,0
-ADCY3|LUAD,0
-MFNG|LUAD,2
-SNIP1|LUAD,0
-PCF11|LUAD,1
-PGLS|LUAD,3
-DNAJC2|LUAD,1
-NRP2|LUAD,3
-ABHD13|LUAD,0
-CDCA2|LUAD,5
-TSPYL5|LUAD,1
-C2orf79|LUAD,0
-ANGPTL3|LUAD,1
-ABCA4|LUAD,1
-USP43|LUAD,0
-FAM193A|LUAD,0
-CDH11|LUAD,3
-ZNF10|LUAD,0
-OIP5|LUAD,18
-HOOK2|LUAD,0
-TET1|LUAD,15
-MPP5|LUAD,0
-IL18R1|LUAD,2
-RGS9BP|LUAD,1
-PCBP3|LUAD,0
-ACCN4|LUAD,0
-FAM111A|LUAD,0
-MAP3K12|LUAD,0
-POLE3|LUAD,1
-MRPS30|LUAD,0
-LIX1|LUAD,0
-ADAMTS5|BRCA,8
-MMP11|BRCA,102
-FIGF|BRCA,11
-COL10A1|BRCA,34
-LMOD1|BRCA,1
-SDPR|BRCA,10
-PPP1R12B|BRCA,2
-SPRY2|BRCA,10
-MME|BRCA,34
-NKAPL|BRCA,3
-HOOK3|BRCA,1
-LRRC67|BRCA,0
-KIAA0513|BRCA,1
-C10orf88|BRCA,1
-SFRS14|BRCA,0
-ZNF177|BRCA,2
-PEBP4|BRCA,1
-PTPN22|BRCA,4
-EIF3J|BRCA,1
-KCTD7|BRCA,0
-GIYD2|BRCA,0
-PPM1H|BRCA,1
-ISLR|BRCA,2
-AXIN1|BRCA,20
-SHISA3|BRCA,4
-MAP9|BRCA,3
-LOC643008|BRCA,0
-SACS|BRCA,13
-CNKSR2|BRCA,2
-STK11|BRCA,168
-MRO|BRCA,3
-SOX21|BRCA,4
-CCR3|BRCA,17
-PSME3|BRCA,2
-TMEM8A|BRCA,0
-TNNT1|BRCA,3
-JTB|BRCA,5
-C12orf24|BRCA,0
-TBP|BRCA,55
-UBXN7|BRCA,0
-PCCB|BRCA,0
-PIGN|BRCA,0
-RMST|BRCA,42
-KIAA0649|BRCA,0
-ZNF254|BRCA,1
-RASA4P|BRCA,0
-ATP5O|BRCA,0
-SARDH|BRCA,3
-KCNK2|BRCA,6
-TCEA1|BRCA,0
-MITD1|BRCA,2
-CXXC4|BRCA,1
-BTN3A3|BRCA,3
-SGK196|BRCA,1
-SEP15|BRCA,6
-CEP63|BRCA,0
-GPR64|BRCA,3
-C4orf7|BRCA,1
-C12orf73|BRCA,0
-SPINT1|BRCA,9
-CA4|BRCA,55
-LOC572558|BRCA,0
-MYOC|BRCA,2
-CPA1|BRCA,1
-NEK2|BRCA,74
-CD300LG|BRCA,7
-MS4A4A|BRCA,3
-LAT2|BRCA,5
-SRGAP3|BRCA,2
-TATDN3|BRCA,0
-PNMT|BRCA,11
-HSP90AA1|BRCA,82
-FAM175B|BRCA,1
-GATSL2|BRCA,0
-ZNF747|BRCA,0
-KBTBD11|BRCA,0
-SFTPD|BRCA,1
-ACADSB|BRCA,3
-MTUS1|BRCA,13
-SIAE|BRCA,1
-SFRS7|BRCA,0
-DAGLA|BRCA,1
-PLIN3|BRCA,3
-C11orf59|BRCA,0
-LAT|BRCA,52
-PCDHGA7|BRCA,0
-NR2F1|BRCA,27
-SCN4B|BRCA,2
-MYCNOS|BRCA,0
-EIF3D|BRCA,10
-ANKRD5|BRCA,0
-C9orf171|BRCA,0
-JDP2|BRCA,0
-SOX7|BRCA,13
-SLC44A5|BRCA,0
-C9orf167|BRCA,1
-MRAP2|BRCA,0
-CRBN|BRCA,29
-PXMP2|BRCA,0
-BLMH|BRCA,1
-SLC25A16|BRCA,1
-KITLG|BRCA,11
-LONRF1|BRCA,0
-TBC1D15|BRCA,0
-AMAC1L2|BRCA,0
-MUC1|BRCA,1001
-C1orf74|BRCA,0
-PIK3C2G|BRCA,4
-SLC25A25|BRCA,0
-NAGA|BRCA,0
-DGCR8|BRCA,16
-ANKMY2|BRCA,2
-EIF3CL|BRCA,1
-MRPL2|BRCA,0
-ZNF501|BRCA,0
-CLYBL|BRCA,1
-OTUD1|LUAD,1
-CAV1|LUAD,49
-WWC2|LUAD,5
-RBP1|LUAD,1
-CMYA5|LUAD,0
-KCTD11|LUAD,0
-SAMD10|LUAD,0
-CDH8|LUAD,0
-ZHX2|LUAD,0
-PLEKHG5|LUAD,0
-KDSR|LUAD,0
-PANX1|LUAD,6
-PTGFRN|LUAD,2
-RASA3|LUAD,1
-NDRG1|LUAD,9
-DOK1|LUAD,3
-LOC283050|LUAD,0
-IER3IP1|LUAD,0
-TREML4|LUAD,0
-FAM178A|LUAD,1
-FAM22F|LUAD,0
-AEN|LUAD,1
-ZBTB41|LUAD,1
-RNF138|LUAD,0
-PVRL2|LUAD,1
-SFRS11|LUAD,0
-RBM25|LUAD,0
-PARG|LUAD,2
-TRNP1|LUAD,0
-FRMD1|LUAD,0
-PHF21A|LUAD,0
-EDA|LUAD,1
-BLM|LUAD,13
-SAMD8|LUAD,0
-C13orf18|LUAD,0
-C14orf139|LUAD,0
-TBL1X|LUAD,0
-KLHL31|LUAD,1
-DPY19L2|LUAD,0
-C9orf128|LUAD,0
-MIS12|LUAD,1
-C4BPA|LUAD,4
-DSTN|LUAD,3
-LOC284900|LUAD,0
-SLCO5A1|LUAD,0
-KIAA2018|LUAD,1
-NBPF15|LUAD,0
-SIX1|LUAD,7
-BTBD18|LUAD,0
-KIAA1671|LUAD,1
-SCGB2A1|LUAD,0
-GP1BA|LUAD,0
-IRF4|LUAD,8
-TNNC1|LUAD,6
-SH3GL3|LUAD,0
-C19orf51|LUAD,0
-ZNF704|LUAD,1
-ERO1L|LUAD,7
-ZNF257|LUAD,1
-FBLN5|LUAD,5
-PKP4|LUAD,0
-ACP5|LUAD,3
-FANCE|LUAD,1
-TTN|LUAD,43
-FBXO5|LUAD,1
-C19orf69|LUAD,0
-ENDOD1|LUAD,0
-SPTLC2|LUAD,0
-ZDHHC12|LUAD,1
-SEC22B|LUAD,0
-PCDHGA9|LUAD,0
-KIT|LUAD,610
-SPCS3|LUAD,0
-GPR22|LUAD,0
-MIXL1|LUAD,0
-C20orf94|LUAD,0
-RFPL1S|LUAD,0
-DNAJA2|LUAD,0
-MPDZ|LUAD,0
-DDX51|LUAD,0
-DAO|LUAD,1
-VDAC1|LUAD,17
-JAK3|LUAD,4
-FAM129A|LUAD,0
-POLR2B|LUAD,0
-ELK3|LUAD,0
-SLFN12L|LUAD,0
-ANKRD56|LUAD,0
-TRMT11|LUAD,0
-MPZL2|LUAD,0
-C9orf173|LUAD,0
-CXorf61|LUAD,1
-GNL2|LUAD,1
-FAM43A|LUAD,0
-TOMM22|LUAD,0
-XAB2|LUAD,1
-CNIH|LUAD,0
-RHBDD2|LUAD,1
-PLP2|LUAD,0
-AGMAT|LUAD,2
-OCA2|LUAD,0
-MFSD5|LUAD,0
-C9orf125|LUAD,0
-LRRTM4|LUAD,0
+PYCR1|lung adenocarcinoma,15
+STX11|lung adenocarcinoma,2
+ANGPT4|lung adenocarcinoma,3
+C13orf36|lung adenocarcinoma,0
+EMP2|lung adenocarcinoma,1
+CD5L|lung adenocarcinoma,2
+OVCH1|lung adenocarcinoma,0
+RTKN2|lung adenocarcinoma,4
+AGER|lung adenocarcinoma,20
+C10orf67|lung adenocarcinoma,0
+BCL6B|lung adenocarcinoma,0
+ALG12|lung adenocarcinoma,0
+SYCP2|lung adenocarcinoma,0
+SYT9|lung adenocarcinoma,0
+RGS16|lung adenocarcinoma,0
+TBX18|lung adenocarcinoma,1
+C11orf16|lung adenocarcinoma,1
+LRP12|lung adenocarcinoma,1
+BMS1P4|lung adenocarcinoma,0
+DYRK2|lung adenocarcinoma,4
+LOC652276|lung adenocarcinoma,0
+SMO|lung adenocarcinoma,6
+MGC16121|lung adenocarcinoma,0
+EIF2A|lung adenocarcinoma,0
+SCO2|lung adenocarcinoma,2
+HIC2|lung adenocarcinoma,0
+AP2S1|lung adenocarcinoma,1
+AGR3|lung adenocarcinoma,0
+PGS1|lung adenocarcinoma,1
+POLR1A|lung adenocarcinoma,0
+ADCY3|lung adenocarcinoma,0
+MFNG|lung adenocarcinoma,2
+SNIP1|lung adenocarcinoma,0
+PCF11|lung adenocarcinoma,1
+PGLS|lung adenocarcinoma,3
+DNAJC2|lung adenocarcinoma,1
+NRP2|lung adenocarcinoma,3
+ABHD13|lung adenocarcinoma,0
+CDCA2|lung adenocarcinoma,5
+TSPYL5|lung adenocarcinoma,1
+C2orf79|lung adenocarcinoma,0
+ANGPTL3|lung adenocarcinoma,1
+ABCA4|lung adenocarcinoma,1
+USP43|lung adenocarcinoma,0
+FAM193A|lung adenocarcinoma,0
+CDH11|lung adenocarcinoma,3
+ZNF10|lung adenocarcinoma,0
+OIP5|lung adenocarcinoma,18
+HOOK2|lung adenocarcinoma,0
+TET1|lung adenocarcinoma,15
+MPP5|lung adenocarcinoma,0
+IL18R1|lung adenocarcinoma,2
+RGS9BP|lung adenocarcinoma,1
+PCBP3|lung adenocarcinoma,0
+ACCN4|lung adenocarcinoma,0
+FAM111A|lung adenocarcinoma,0
+MAP3K12|lung adenocarcinoma,0
+POLE3|lung adenocarcinoma,1
+MRPS30|lung adenocarcinoma,0
+LIX1|lung adenocarcinoma,0
+ADAMTS5|breast cancer,8
+MMP11|breast cancer,102
+FIGF|breast cancer,11
+COL10A1|breast cancer,34
+LMOD1|breast cancer,1
+SDPR|breast cancer,10
+PPP1R12B|breast cancer,2
+SPRY2|breast cancer,10
+MME|breast cancer,34
+NKAPL|breast cancer,3
+HOOK3|breast cancer,1
+LRRC67|breast cancer,0
+KIAA0513|breast cancer,1
+C10orf88|breast cancer,1
+SFRS14|breast cancer,0
+ZNF177|breast cancer,2
+PEBP4|breast cancer,1
+PTPN22|breast cancer,4
+EIF3J|breast cancer,1
+KCTD7|breast cancer,0
+GIYD2|breast cancer,0
+PPM1H|breast cancer,1
+ISLR|breast cancer,2
+AXIN1|breast cancer,20
+SHISA3|breast cancer,4
+MAP9|breast cancer,3
+LOC643008|breast cancer,0
+SACS|breast cancer,13
+CNKSR2|breast cancer,2
+STK11|breast cancer,168
+MRO|breast cancer,3
+SOX21|breast cancer,4
+CCR3|breast cancer,17
+PSME3|breast cancer,2
+TMEM8A|breast cancer,0
+TNNT1|breast cancer,3
+JTB|breast cancer,5
+C12orf24|breast cancer,0
+TBP|breast cancer,55
+UBXN7|breast cancer,0
+PCCB|breast cancer,0
+PIGN|breast cancer,0
+RMST|breast cancer,42
+KIAA0649|breast cancer,0
+ZNF254|breast cancer,1
+RASA4P|breast cancer,0
+ATP5O|breast cancer,0
+SARDH|breast cancer,3
+KCNK2|breast cancer,6
+TCEA1|breast cancer,0
+MITD1|breast cancer,2
+CXXC4|breast cancer,1
+BTN3A3|breast cancer,3
+SGK196|breast cancer,1
+SEP15|breast cancer,6
+CEP63|breast cancer,0
+GPR64|breast cancer,3
+C4orf7|breast cancer,1
+C12orf73|breast cancer,0
+SPINT1|breast cancer,9
+CA4|breast cancer,55
+LOC572558|breast cancer,0
+MYOC|breast cancer,2
+CPA1|breast cancer,1
+NEK2|breast cancer,74
+CD300LG|breast cancer,7
+MS4A4A|breast cancer,3
+LAT2|breast cancer,5
+SRGAP3|breast cancer,2
+TATDN3|breast cancer,0
+PNMT|breast cancer,11
+HSP90AA1|breast cancer,82
+FAM175B|breast cancer,1
+GATSL2|breast cancer,0
+ZNF747|breast cancer,0
+KBTBD11|breast cancer,0
+SFTPD|breast cancer,1
+ACADSB|breast cancer,3
+MTUS1|breast cancer,13
+SIAE|breast cancer,1
+SFRS7|breast cancer,0
+DAGLA|breast cancer,1
+PLIN3|breast cancer,3
+C11orf59|breast cancer,0
+LAT|breast cancer,52
+PCDHGA7|breast cancer,0
+NR2F1|breast cancer,27
+SCN4B|breast cancer,2
+MYCNOS|breast cancer,0
+EIF3D|breast cancer,10
+ANKRD5|breast cancer,0
+C9orf171|breast cancer,0
+JDP2|breast cancer,0
+SOX7|breast cancer,13
+SLC44A5|breast cancer,0
+C9orf167|breast cancer,1
+MRAP2|breast cancer,0
+CRBN|breast cancer,29
+PXMP2|breast cancer,0
+BLMH|breast cancer,1
+SLC25A16|breast cancer,1
+KITLG|breast cancer,11
+LONRF1|breast cancer,0
+TBC1D15|breast cancer,0
+AMAC1L2|breast cancer,0
+MUC1|breast cancer,1001
+C1orf74|breast cancer,0
+PIK3C2G|breast cancer,4
+SLC25A25|breast cancer,0
+NAGA|breast cancer,0
+DGCR8|breast cancer,16
+ANKMY2|breast cancer,2
+EIF3CL|breast cancer,1
+MRPL2|breast cancer,0
+ZNF501|breast cancer,0
+CLYBL|breast cancer,1
+OTUD1|lung adenocarcinoma,1
+CAV1|lung adenocarcinoma,49
+WWC2|lung adenocarcinoma,5
+RBP1|lung adenocarcinoma,1
+CMYA5|lung adenocarcinoma,0
+KCTD11|lung adenocarcinoma,0
+SAMD10|lung adenocarcinoma,0
+CDH8|lung adenocarcinoma,0
+ZHX2|lung adenocarcinoma,0
+PLEKHG5|lung adenocarcinoma,0
+KDSR|lung adenocarcinoma,0
+PANX1|lung adenocarcinoma,6
+PTGFRN|lung adenocarcinoma,2
+RASA3|lung adenocarcinoma,1
+NDRG1|lung adenocarcinoma,9
+DOK1|lung adenocarcinoma,3
+LOC283050|lung adenocarcinoma,0
+IER3IP1|lung adenocarcinoma,0
+TREML4|lung adenocarcinoma,0
+FAM178A|lung adenocarcinoma,1
+FAM22F|lung adenocarcinoma,0
+AEN|lung adenocarcinoma,1
+ZBTB41|lung adenocarcinoma,1
+RNF138|lung adenocarcinoma,0
+PVRL2|lung adenocarcinoma,1
+SFRS11|lung adenocarcinoma,0
+RBM25|lung adenocarcinoma,0
+PARG|lung adenocarcinoma,2
+TRNP1|lung adenocarcinoma,0
+FRMD1|lung adenocarcinoma,0
+PHF21A|lung adenocarcinoma,0
+EDA|lung adenocarcinoma,1
+BLM|lung adenocarcinoma,13
+SAMD8|lung adenocarcinoma,0
+C13orf18|lung adenocarcinoma,0
+C14orf139|lung adenocarcinoma,0
+TBL1X|lung adenocarcinoma,0
+KLHL31|lung adenocarcinoma,1
+DPY19L2|lung adenocarcinoma,0
+C9orf128|lung adenocarcinoma,0
+MIS12|lung adenocarcinoma,1
+C4BPA|lung adenocarcinoma,4
+DSTN|lung adenocarcinoma,3
+LOC284900|lung adenocarcinoma,0
+SLCO5A1|lung adenocarcinoma,0
+KIAA2018|lung adenocarcinoma,1
+NBPF15|lung adenocarcinoma,0
+SIX1|lung adenocarcinoma,7
+BTBD18|lung adenocarcinoma,0
+KIAA1671|lung adenocarcinoma,1
+SCGB2A1|lung adenocarcinoma,0
+GP1BA|lung adenocarcinoma,0
+IRF4|lung adenocarcinoma,8
+TNNC1|lung adenocarcinoma,6
+SH3GL3|lung adenocarcinoma,0
+C19orf51|lung adenocarcinoma,0
+ZNF704|lung adenocarcinoma,1
+ERO1L|lung adenocarcinoma,7
+ZNF257|lung adenocarcinoma,1
+FBLN5|lung adenocarcinoma,5
+PKP4|lung adenocarcinoma,0
+ACP5|lung adenocarcinoma,3
+FANCE|lung adenocarcinoma,1
+TTN|lung adenocarcinoma,43
+FBXO5|lung adenocarcinoma,1
+C19orf69|lung adenocarcinoma,0
+ENDOD1|lung adenocarcinoma,0
+SPTLC2|lung adenocarcinoma,0
+ZDHHC12|lung adenocarcinoma,1
+SEC22B|lung adenocarcinoma,0
+PCDHGA9|lung adenocarcinoma,0
+KIT|lung adenocarcinoma,610
+SPCS3|lung adenocarcinoma,0
+GPR22|lung adenocarcinoma,0
+MIXL1|lung adenocarcinoma,0
+C20orf94|lung adenocarcinoma,0
+RFPL1S|lung adenocarcinoma,0
+DNAJA2|lung adenocarcinoma,0
+MPDZ|lung adenocarcinoma,0
+DDX51|lung adenocarcinoma,0
+DAO|lung adenocarcinoma,1
+VDAC1|lung adenocarcinoma,17
+JAK3|lung adenocarcinoma,4
+FAM129A|lung adenocarcinoma,0
+POLR2B|lung adenocarcinoma,0
+ELK3|lung adenocarcinoma,0
+SLFN12L|lung adenocarcinoma,0
+ANKRD56|lung adenocarcinoma,0
+TRMT11|lung adenocarcinoma,0
+MPZL2|lung adenocarcinoma,0
+C9orf173|lung adenocarcinoma,0
+CXorf61|lung adenocarcinoma,1
+GNL2|lung adenocarcinoma,1
+FAM43A|lung adenocarcinoma,0
+TOMM22|lung adenocarcinoma,0
+XAB2|lung adenocarcinoma,1
+CNIH|lung adenocarcinoma,0
+RHBDD2|lung adenocarcinoma,1
+PLP2|lung adenocarcinoma,0
+AGMAT|lung adenocarcinoma,2
+OCA2|lung adenocarcinoma,0
+MFSD5|lung adenocarcinoma,0
+C9orf125|lung adenocarcinoma,0
+LRRTM4|lung adenocarcinoma,0
+ISCU|cancer,34
+TMSB4Y|cancer,5
+RAB4A|cancer,20
+PFDN1|cancer,12
+SNHG25|cancer,13
+CRYM|cancer,13
+ACTR10|cancer,3
+MEPCE|cancer,12
+ASAH1|cancer,62
+IFITM3|cancer,81
+ITCH|cancer,340
+MTCH2|cancer,34
+LONP2|cancer,6
+BET1L|cancer,4
+SHKBP1|cancer,7
+ZSWIM7|cancer,3
+PRKCQ-AS1|cancer,8
+RNF123|cancer,8
+EVL|cancer,64
+LINC01218|cancer,0
+HBA2|cancer,12
+RAP1B|cancer,80
+LAMB2|cancer,23
+ATAD2|cancer,137
+SKIV2L2|cancer,1
+NAA50|cancer,4
+MPST|cancer,35
+SCAPER|cancer,3
+CTDSPL|cancer,22
+STK19B|cancer,0
+NPRL3|cancer,13
+SPTAN1|cancer,26
+CIR1|cancer,6
+RGS3|cancer,23
+TMEM260|cancer,0
+TNFSF10|cancer,126
+LEF1|cancer,566
+BMS1|cancer,36
+TANK|cancer,487
+TXNDC12|cancer,10
+PPP1CC|cancer,20
+PSMB10|cancer,26
+RPL18A|cancer,7
+LPAR5|cancer,38
+WWOX|cancer,366
+RP11-375A5.1|cancer,0
+ARPC5L|cancer,4
+SCAMP2|cancer,5
+LINC00657|cancer,29
+TBC1D5|cancer,6
+NHP2|cancer,30
+DGUOK|cancer,16
+BCAP31|cancer,30
+SHOC2|cancer,44
+SEPT7-AS1|cancer,0
+COPS5|cancer,46
+HMG20A|cancer,9
+CCDC14|cancer,1
+BRAP|cancer,19
+SS18|cancer,79
+CD27|cancer,630
+RPSA|cancer,51
+IL7R|cancer,199
+TRAT1|cancer,9
+ZNF506|cancer,3
+TRBC2|cancer,7
+C11orf1|cancer,1
+IFI27|cancer,75
+CD3G|cancer,37
+PSAP|cancer,101
+NSFL1C|cancer,3
+MAP4K5|cancer,8
+SSX2IP|cancer,13
+TBC1D1|cancer,9
+QRICH1|cancer,5
+JPX|cancer,29
+FKBP15|cancer,3
+GTF2H1|cancer,13
+ZNF397|cancer,3
+LGALS2|cancer,13
+AC007365.3|cancer,0
+NUP153|cancer,28
+SLC12A6|cancer,1
+SH3KBP1|cancer,12
+DNAJB11|cancer,8
+PTPN6|cancer,104
+BLZF1|cancer,3
+MAPK10|cancer,63
+PPP1R14A|cancer,19
+PHC3|cancer,11
+SEC61G|cancer,41
+NUTM2A-AS1|cancer,13
+EWSR1|cancer,304
+ANAPC15|cancer,0
+CD33|cancer,548
+LDLRAD3|cancer,14
+SRP54-AS1|cancer,0
+SMIM14|cancer,1
+CD2BP2|cancer,5
+NOMO2|cancer,6
+DCTN1|cancer,23
+RNF149|cancer,10
+ATRAID|cancer,3
+SLCO3A1|cancer,15
+LSM8|cancer,2
+MRPL35|cancer,10
+TARDBP|cancer,27
+AKR1A1|cancer,32
+NUP205|cancer,15
+C9orf89|cancer,1
+PSMB8|cancer,94
+SLC4A7|cancer,59
+OSER1-AS1|cancer,5
+DTNB|cancer,73
+ALOX5|cancer,138
+EXOC5|cancer,2
+NOP16|cancer,10
+ZDHHC5|cancer,20
+CTD-2336O2.1|cancer,0
+RHOH|cancer,17
+TMBIM6|cancer,29
+LTB|cancer,146
+TRMT13|cancer,2
+FCMR|cancer,6
+RP11-632K20.7|cancer,0
+CTSH|cancer,34
+LINC01006|cancer,9
+SCNM1|cancer,1
+CNTN4-AS1|cancer,1
+WDR6|cancer,4
+PUM1|cancer,72
+LINC01420|cancer,6
+POPDC2|cancer,6
+RILPL1|cancer,3
+RP11-379F4.4|cancer,0
+PBDC1|cancer,1
+EIF4EBP1|cancer,99
+ZNRD1|cancer,35
+KIAA0226|cancer,2
+TPP2|cancer,7
+FMR1|cancer,104
+FRG1B|cancer,1
+ADA|cancer,612
+VPS37B|cancer,3
+RPL32|cancer,21
+RNF212B|cancer,0
+SH2B3|cancer,33
+RP11-578C11.2|cancer,0
+PPFIBP1|cancer,8
+TRAPPC2L|cancer,6
+GPATCH4|cancer,6
+PSIP1|cancer,24
+ERLEC1|cancer,4
+SCMH1|cancer,0
+BRWD3|cancer,9
+BTF3|cancer,37
+TBC1D25|cancer,1
+MAD2L1BP|cancer,3
+ELMO2|cancer,8
+CD40LG|cancer,68
+NIN|cancer,76
+CCDC132|cancer,2
+EMC7|cancer,1
+MLEC|cancer,8
+SNRPA|cancer,23
+LRTOMT|cancer,1
+PAF1|cancer,51
+SLC25A30|cancer,2
+BBS9|cancer,5
+LRRCC1|cancer,0
+SDHA|cancer,198
+HIST1H2BD|cancer,6
+LAMTOR4|cancer,4
+ZNF542P|lung cancer,0
+WDR11-AS1|lung cancer,0
+HSD17B3|lung cancer,0
+CAPNS1|lung cancer,1
+LINC01088|lung cancer,3
+CST3|lung cancer,4
+CMTM6|lung cancer,15
+DAZAP2|lung cancer,1
+PPCS|lung cancer,135
+DAPP1|lung cancer,2
+C19orf43|lung cancer,0
+ZFYVE21|lung cancer,0
+FAM73B|lung cancer,0
+WDR41|lung cancer,0
+GAPVD1|lung cancer,0
+PSMC5|lung cancer,1
+ACAP2|lung cancer,1
+FYTTD1|lung cancer,1
+TRPC6|lung cancer,7
+GBF1|lung cancer,2
+C1QBP|lung cancer,3
+FAAP20|lung cancer,0
+SSU72|lung cancer,0
+VPS13B|lung cancer,2
+SEPT11|lung cancer,0
+PPP1R21|lung cancer,2
+LY6G5C|lung cancer,0
+SRA1|lung cancer,2
+HLA-B|lung cancer,43
+NFU1|lung cancer,0
+CAP1|lung cancer,15
+PMPCB|lung cancer,1
+RPL11|lung cancer,6
+EIF1AX|lung cancer,0
+NLRC5|lung cancer,10
+DRAM2|lung cancer,1
+DNAJC3|lung cancer,2
+UBE2N|lung cancer,5
+LAMP5|lung cancer,0
+FGD3|lung cancer,4
+PUM1|lung cancer,9
+EXOC5|lung cancer,0
+SNX14|lung cancer,0
+ANKH|lung cancer,1
+TRAPPC11|lung cancer,0
+NONO|lung cancer,15
+CD48|lung cancer,5
+DHX9|lung cancer,17
+HDGF|lung cancer,41
+FRMD4B|lung cancer,0
+TMEM55B|lung cancer,1
+USP39|lung cancer,12
+CUL2|lung cancer,4
+RPL24|lung cancer,0
+PTDSS2|lung cancer,0
+ADSS|lung cancer,3
+PITPNC1|lung cancer,0
+NDUFB9|lung cancer,0
+CD3D|lung cancer,6
+MTRNR2L9|lung cancer,0
+CFL1|lung cancer,15
+HPSE|lung cancer,6
+TMSB4XP8|lung cancer,0
+IFITM3|lung cancer,3
+COL6A3|lung cancer,4
+ITGB3BP|lung cancer,0
+MAGOHB|lung cancer,0
+CMTM5|lung cancer,1
+ADAR|lung cancer,7
+RPS3A|lung cancer,2
+MLH1|lung cancer,69
+VPS37A|lung cancer,0
+KATNA1|lung cancer,1
+MKKS|lung cancer,1
+GART|lung cancer,4
+PTMS|lung cancer,58
+ILKAP|lung cancer,0
+ETV6|lung cancer,13
+PAIP2|lung cancer,0
+NXF3|lung cancer,0
+SRSF6|lung cancer,2
+UBA52|lung cancer,4
+TBCB|lung cancer,16
+ATP6V0B|lung cancer,0
+CD79B|lung cancer,6
+CCDC90B|lung cancer,0
+KXD1|lung cancer,1
+ETS2|lung cancer,11
+AGPS|lung cancer,4
+MRPL23|lung cancer,1
+KMT2C|lung cancer,25
+VPS37B|lung cancer,0
+RAB2A|lung cancer,0
+RP11-354E11.2|lung cancer,0
+CAST|lung cancer,80
+CCDC91|lung cancer,0
+ATR|lung cancer,248
+CTDSPL|lung cancer,5
+ANXA6|lung cancer,1
+MT2A|lung cancer,11
+FGD5-AS1|lung cancer,13
+ZDHHC4|lung cancer,0
+SELP|lung cancer,2
+FOPNL|lung cancer,0
+SNHG17|lung cancer,4
+TVP23B|lung cancer,0
+SF1|lung cancer,5
+FBXL5|lung cancer,2
+METTL22|lung cancer,0
+CSF3R|lung cancer,5
+CARS2|lung cancer,0
+U2SURP|lung cancer,1
+WDR61|lung cancer,0
+ACSS1|lung cancer,0
+RBPMS2|lung cancer,0
+CCNDBP1|lung cancer,1
+DHRS3|lung cancer,0
+TIMP1|lung cancer,163
+STAM|lung cancer,3
+DUSP22|lung cancer,5
+USP9X|lung cancer,23
+TTC13|lung cancer,0
+LONRF1|lung cancer,0
+TBC1D23|lung cancer,1
+RNF5|lung cancer,1
+LRRFIP1|lung cancer,2
+ARRB2|lung cancer,3
+TTC3|lung cancer,0
+KIAA0922|lung cancer,0
+P2RY12|lung cancer,2
+HAGH|lung cancer,1
+NARS|lung cancer,2
+CD9|lung cancer,79
+CNOT1|lung cancer,0
+ZCCHC7|lung cancer,0
+ARFGEF2|lung cancer,0
+CDC40|lung cancer,2
+ADRM1|lung cancer,2
+ITGAE|lung cancer,3
+CEP63|lung cancer,0
+CALCOCO2|lung cancer,1
+EPB41L3|lung cancer,7
+MAPKAPK3|lung cancer,1
+DNAJC1|lung cancer,0
+NDUFS6|lung cancer,0
+FAM105A|lung cancer,0
+PRKD2|lung cancer,0
+UTY|lung cancer,0
+CREM|lung cancer,2
+C9orf3|lung cancer,0
+RSF1|lung cancer,6
+CANX|lung cancer,4
+SP3|lung cancer,21
+FRA10AC1|lung cancer,0
+TRUB2|lung cancer,0
+CSGALNACT2|lung cancer,0
+C12orf57|lung cancer,0
+CEP162|lung cancer,0
+ELMO1|lung cancer,3
+PELI2|lung cancer,0
+STK17A|lung cancer,0
+CLASP1|lung cancer,1
+TTYH3|lung cancer,2
+PDE3A|lung cancer,7
+SRP68|lung cancer,0
+TLN1|lung cancer,7
+HDAC8|lung cancer,13
+NAP1L1|lung cancer,2
+CDC37|lung cancer,5
+ARPC1B|lung cancer,2
+BCAP31|lung cancer,3
+MS4A1|lung cancer,10
+H3F3A|lung cancer,6
+GAS2L1|lung cancer,0
+CCS|lung cancer,54
+PPP4R1|lung cancer,0
+PHF14|lung cancer,3
+SYPL1|lung cancer,0
+HIBCH|lung cancer,0
+PNKD|lung cancer,0
+COTL1|lung cancer,4
+SFPQ|lung cancer,9
+HSPA9|lung cancer,2
+SKAP1|lung cancer,0
+NCOA7|lung cancer,2
+TAF6|lung cancer,1
+GLTP|lung cancer,1
+R3HDM4|lung cancer,0
+RASSF1|lung cancer,65
+DNAJC2|lung cancer,2
+MRPL18|lung cancer,1
+FCGR2A|lung cancer,2
+GCLM|lung cancer,12
+DLEU2|lung cancer,7
+MTHFD2L|lung cancer,0
+MATK|lung cancer,2
+HP1BP3|lung cancer,0
+SFI1|lung cancer,1
+KRAS|lung cancer,6091
+RPS26|lung cancer,1
+VMP1|lung cancer,3
+USP16|lung cancer,1
+LY86-AS1|lung cancer,3
+HINT1|lung cancer,3
+SMARCC2|lung cancer,1
+ARID1B|lung cancer,19
+PITPNA|lung cancer,3
+SRGN|lung cancer,5
+OSTF1|lung cancer,0
+ELAVL1|lung cancer,19
+KATNAL1|lung cancer,0
+RAP1A|lung cancer,12
+TST|lung cancer,20
+GOSR1|lung cancer,0
+RPS15|lung cancer,1
+CKB|lung cancer,12
+PPP2R5C|lung cancer,1
+MCPH1-AS1|lung cancer,0
+SMAD2|lung cancer,244
+CD3E|lung cancer,5
+E2F1|lung cancer,244
+ST3GAL1|lung cancer,2
+KYNU|lung cancer,3
+ACOT7|lung cancer,5
+KSR1|lung cancer,7
+ACTG1|lung cancer,7
+PRSS50|lung cancer,0
+MYL6|lung cancer,0
+WDFY4|lung cancer,2
+MTRR|lung cancer,16
+CAMTA2|lung cancer,0
+RP11-930O11.1|lung cancer,0
+R3HDM2|lung cancer,1
+EDEM2|lung cancer,0
+TOP2B|lung cancer,5
+SEC24C|lung cancer,0
+PITHD1|lung cancer,1
+RPL13A|lung cancer,2
+CAPZA2|lung cancer,4
+MYO15B|lung cancer,0
+MEF2C|lung cancer,10
+CCDC53|lung cancer,0
+BARD1|lung cancer,10
+BCAP29|lung cancer,1
+MX2|lung cancer,3
+SLC25A3|lung cancer,3
+PEPD|lung cancer,0
+SMC1A|lung cancer,3
+UBN1|lung cancer,0
+PSMD13|lung cancer,1
+GNL3|lung cancer,2
+CLEC2D|lung cancer,1
+SFXN3|lung cancer,1
+NTAN1|lung cancer,0
+CLTA|lung cancer,2
+STXBP1|lung cancer,3
+SPTBN1|lung cancer,3
+APIP|lung cancer,1
+MFN2|lung cancer,12
+PBX1|lung cancer,12
+PPP2CA|lung cancer,3
+CD37|lung cancer,2
+MAD2L2|lung cancer,8
+TSPAN33|lung cancer,0
+RPL32|lung cancer,6
+RP11-525A16.4|lung cancer,0
+RPL7|lung cancer,0
+CYP20A1|lung cancer,1
+BLVRA|lung cancer,0
+RPS6|lung cancer,13
+ODF2|lung cancer,0
+DNAJC10|lung cancer,2
+RAB3GAP2|lung cancer,0
+KDM3B|lung cancer,1
+AC093818.1|lung cancer,0
+FOXC1|breast cancer,104
+MLPH|breast cancer,11
+FOXA1|breast cancer,467
+ESR1|breast cancer,1980
+TBC1D9|breast cancer,7
+CENPN|breast cancer,10
+C6orf97|breast cancer,9
+ERBB2|breast cancer,4050
+AGR3|breast cancer,17
+CENPA|breast cancer,31
+HOXA13|breast cancer,1
+LRRN4|breast cancer,0
+KIAA0776|breast cancer,0
+C11orf1|breast cancer,1
+SFRS9|breast cancer,0
+ZNF180|breast cancer,0
+PENK|breast cancer,8
+PTPRH|breast cancer,2
+EIF3H|breast cancer,8
+KDM2B|breast cancer,6
+GJA4|breast cancer,3
+PPP1R13L|breast cancer,2
+ISYNA1|breast cancer,2
+AZI2|breast cancer,4
+SHROOM2|breast cancer,2
+MAPK8IP3|breast cancer,1
+LOC646851|breast cancer,0
+SAMD4B|breast cancer,1
+CNKSR1|breast cancer,1
+STK32B|breast cancer,1
+MRPL22|breast cancer,0
+SP2|breast cancer,55
+PTAFR|breast cancer,2
+TMEM92|breast cancer,2
+TNPO3|breast cancer,0
+KAL1|breast cancer,1
+C12orf32|breast cancer,1
+TBX20|breast cancer,1
+UCHL3|breast cancer,8
+PCDHA13|breast cancer,0
+PIH1D2|breast cancer,0
+RND3|breast cancer,1
+KIAA0907|breast cancer,0
+ZNF256|breast cancer,0
+RASGRP3|breast cancer,2
+ATP6V0A1|breast cancer,1
+SATL1|breast cancer,0
+KCNMB1|breast cancer,2
+TCEAL7|breast cancer,1
+MKX|breast cancer,0
+CXCR6|breast cancer,27
+BUB1|breast cancer,77
+SGSM2|breast cancer,3
+SEPT5|breast cancer,1
+CEP68|breast cancer,1
+GPR83|breast cancer,0
+C5orf13|breast cancer,1
+C12orf75|breast cancer,0
+SPON2|breast cancer,3
+CALML3|lung cancer,5
+DSG3|lung cancer,16
+KRT5|lung cancer,24
+DSC3|lung cancer,9
+LASS3|lung cancer,0
+KRT74|lung cancer,0
+BCL2L15|lung cancer,0
+MACC1|lung cancer,24
+BNC1|lung cancer,2
+CD2AP|lung cancer,1
+MRPS18C|lung cancer,0
+LAMC1|lung cancer,5
+SRI|lung cancer,36
+TATDN3|lung cancer,0
+HSD17B2|lung cancer,1
+FAM169B|lung cancer,0
+GATA1|lung cancer,13
+ZNF74|lung cancer,1
+JSRP1|lung cancer,2
+SGCA|lung cancer,2
+ACADSB|lung cancer,2
+MTIF3|lung cancer,0
+SIGLEC1|lung cancer,1
+SFTPA1|lung cancer,18
+CYTL1|lung cancer,2
+PLEKHJ1|lung cancer,0
+C11orf68|lung cancer,0
+LAMB3|lung cancer,9
+PCDHB5|lung cancer,1
+NPW|lung cancer,0
+SCO2|lung cancer,4
+MVK|lung cancer,1
+EIF2B5|lung cancer,2
+ANKRD53|lung cancer,0
+C9orf140|lung cancer,0
+ITPR2|lung cancer,1
+SP6|lung cancer,7
+SLC4A11|lung cancer,0
+C9orf131|lung cancer,0
+MPDZ|lung cancer,2
+CRABP2|lung cancer,20
+PWWP2A|lung cancer,0
+BLVRB|lung cancer,0
+SLC25A24|lung cancer,0
+KIF5B|lung cancer,168
+LOC729176|lung cancer,0
+TBC1D16|lung cancer,1
+AMAC1L2|lung cancer,0
+MTMR12|lung cancer,0
+C1orf69|lung cancer,0
+PIGU|lung cancer,0
+SLC25A35|lung cancer,0
+N6AMT2|lung cancer,0
+DERL2|lung cancer,0
+ANKMY1|lung cancer,0
+EIF2B3|lung cancer,1
+MPZL1|lung cancer,5
+ZNF493|lung cancer,0
+CLSTN2|lung cancer,0
+TG|cancer,5273
+NKX3-1|cancer,449
+GFAP|cancer,515
+C1orf61|cancer,2
+GATA3|cancer,1464
+SOX17|cancer,252
+TCF21|cancer,83
+VTN|cancer,53
+ASGR2|cancer,11
+KLK4|cancer,130
+RPLP1|cancer,16
+CTSO|cancer,15
+KRTCAP2|cancer,9
+SGOL1|cancer,12
+CMKLR1|cancer,58
+ZNF197|cancer,2
+PSMD2|cancer,39
+LAMC3|cancer,16
+PLEKHG4B|cancer,3
+REST|cancer,8406
+ROR2|cancer,193
+PAAF1|cancer,1
+EIF5|cancer,28
+MECOM|cancer,81
+ITFG1|cancer,5
+TTC19|cancer,2
+FFAR2|cancer,37
+FIBIN|cancer,4
+ADRBK2|cancer,7
+ZFC3H1|cancer,5
+SAR1A|cancer,9
+RHOBTB1|cancer,14
+SLC2A8|cancer,2
+RPL34|cancer,18
+PLK3|cancer,84
+TUFM|cancer,25
+GLG1|cancer,20
+PRDM10|cancer,16
+ERG|cancer,1955
+BCAS3|cancer,17
+SGPP2|cancer,16
+C11orf54|cancer,3
+C12orf60|cancer,0
+TIPARP|cancer,35
+LPXN|cancer,21
+ELOVL6|cancer,47
+CCT5|cancer,41
+NEDD8|cancer,350
+CBX1|cancer,40
+ENGASE|cancer,0
+MED20|cancer,4
+SPNS2|cancer,37
+LILRA5|cancer,3
+ORAI1|cancer,287
+SLK|cancer,48
+BIRC2|cancer,94
+LGR5|cancer,1079
+SHISA9|cancer,4
+HAUS3|cancer,2
+KIAA0408|cancer,2
+LRRC69|breast cancer,0
+SFRS15|breast cancer,0
+PECAM1|breast cancer,38
+PTPN23|breast cancer,2
+PPM1J|breast cancer,0
+SHISA4|breast cancer,0
+MAPK1|breast cancer,108
+LOC643387|breast cancer,0
+SAE1|breast cancer,4
+MRP63|breast cancer,0
+SOX2OT|breast cancer,14
+PSME4|breast cancer,0
+PCDH1|breast cancer,4
+PIGO|breast cancer,0
+RNASE1|breast cancer,7
+RASAL1|breast cancer,3
+SARM1|breast cancer,3
+MITF|breast cancer,30
+SGK2|breast cancer,2
+SEPHS1|breast cancer,0
+SPINT2|breast cancer,6
+GLRA4|breast cancer,0
+GPAM|breast cancer,4
+MS4A6A|breast cancer,1
+LATS1|breast cancer,92
+PNN|breast cancer,13
+HSP90AB1|breast cancer,29
+FAM175A|breast cancer,10
+GATSL1|breast cancer,0
+KBTBD12|breast cancer,0
+SFXN1|breast cancer,3
+MTUS2|breast cancer,2
+SIAH1|breast cancer,20
+SFRS8|breast cancer,1
+DAG1|breast cancer,2
+PLIN4|breast cancer,4
+PCDHGA8|breast cancer,0
+NR2F2|breast cancer,15
+SCN5A|breast cancer,15
+MYCT1|breast cancer,1
+JHDM1D|breast cancer,5
+SOX8|breast cancer,8
+SLC45A1|breast cancer,0
+MRAS|breast cancer,6
+CRB3|breast cancer,8
+PXMP4|breast cancer,0
+SLC25A17|breast cancer,1
+KL|breast cancer,51
+LONRF2|breast cancer,0
+MUC12|breast cancer,2
+PIK3C3|breast cancer,10
+SLC25A26|breast cancer,0
+NAGK|breast cancer,0
+DGCR6L|breast cancer,0
+EIF3C|breast cancer,1
+MRPL20|breast cancer,2
+CLVS1|breast cancer,0
+LGR4|lung adenocarcinoma,9
+CMTM8|lung adenocarcinoma,1
+KCTD10|lung adenocarcinoma,3
+CDH7|lung adenocarcinoma,0
+KDR|lung adenocarcinoma,23
+DOHH|lung adenocarcinoma,0
+IER3|lung adenocarcinoma,2
+FAM177B|lung adenocarcinoma,0
+FAM22D|lung adenocarcinoma,0
+FRK|lung adenocarcinoma,0
+ECT2L|lung adenocarcinoma,1
+KLHL30|lung adenocarcinoma,0
+DPY19L1|lung adenocarcinoma,2
+DST|lung adenocarcinoma,3
+KIAA2013|lung adenocarcinoma,0
+KIAA1644|lung adenocarcinoma,0
+GOT2|lung adenocarcinoma,5
+IRF3|lung adenocarcinoma,10
+ETV4|lung adenocarcinoma,9
+FBLN7|lung adenocarcinoma,0
+PL-5283|lung adenocarcinoma,0
+FANCF|lung adenocarcinoma,1
+FBXO6|lung adenocarcinoma,0
+SEC22C|lung adenocarcinoma,0
+PCDHGB1|lung adenocarcinoma,0
+KITLG|lung adenocarcinoma,1
+GPR25|lung adenocarcinoma,0
+MKI67|lung adenocarcinoma,31
+OVCH2|lung adenocarcinoma,0
+RFPL2|lung adenocarcinoma,0
+MPEG1|lung adenocarcinoma,2
+JAKMIP1|lung adenocarcinoma,0
+FAM129B|lung adenocarcinoma,1
+POLR2C|lung adenocarcinoma,0
+MPZL3|lung adenocarcinoma,0
+GNL3|lung adenocarcinoma,2
+FAM43B|lung adenocarcinoma,0
+RHBDD3|lung adenocarcinoma,0
+PLRG1|lung adenocarcinoma,0
+OCEL1|lung adenocarcinoma,0
+MFSD6|lung adenocarcinoma,0
+LRSAM1|lung adenocarcinoma,2
